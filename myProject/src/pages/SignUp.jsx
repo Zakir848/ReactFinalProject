@@ -100,6 +100,7 @@ export default function SignUp() {
                 <React.Fragment key="employer">
                   <input
                     name="email"
+                    type="email"
                     placeholder="Enter email"
                     {...register("email", {
                       required: "Please, enter your email",
@@ -203,7 +204,7 @@ export default function SignUp() {
                     <label style={{ color: "gray" }}>
                       Enter the company's founding date.
                     </label>
-                  )}
+                  )}                  
                 </React.Fragment>
               </>
             ) : (
@@ -271,6 +272,7 @@ export default function SignUp() {
 
                   <input
                     name="email"
+                    type="email"
                     placeholder="Enter email"
                     {...register("email", {
                       required: "Please, enter your email",
@@ -296,6 +298,7 @@ export default function SignUp() {
 
                   <input
                     name="password"
+                    type="password"
                     placeholder="Enter password"
                     {...register("password", {
                       required: "Please, enter your password",
@@ -321,6 +324,7 @@ export default function SignUp() {
 
                   <input
                     name="repeadPassword"
+                    type="password"
                     placeholder="Repead password"
                     {...register("repeadPassword", {
                       required: "Please, enter your password",

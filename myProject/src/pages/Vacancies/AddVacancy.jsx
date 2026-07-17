@@ -1,5 +1,5 @@
-import Footer from "../components/Footer";
-import "../styles/AddVacancy.css";
+import Footer from "../../components/Footer";
+import "../../styles/AddVacancy.css";
 
 export default function AddVacancy() {
   return (

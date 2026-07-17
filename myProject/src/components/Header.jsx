@@ -17,7 +17,7 @@ import {
 import LogoutIcon from "@mui/icons-material/Logout";
 import Setting from "@mui/icons-material/Settings";
 import Search from "@mui/icons-material/Search";
-import Input from "@mui/material/Input";
+import Input from "@mui/material/InputBase";
 import { useContextFunc } from "../context/JobContext";
 
 export default function Header() {
@@ -68,7 +68,6 @@ export default function Header() {
               borderRadius: "50%",
               bgcolor: "primary.main",
               boxShadow: (theme) => `0 0 8px ${theme.palette.primary.main}`,
-              "&:hover": { bgcolor: "success.main" },
             }}
           />
           <Typography variant="h6" fontWeight={800} letterSpacing="-0.5px">
@@ -88,7 +87,15 @@ export default function Header() {
             flexGrow: 1,
           }}
         >
-          <Input>JobTrack</Input>
+          <Input
+            placeholder="Seacrh user"
+            sx={{
+              bgcolor: "white",
+              borderRadius: "20px",
+              color: "black",
+              padding: "0 10px",
+            }}
+          />
           <Search />
         </Box>
 

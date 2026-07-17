@@ -44,40 +44,63 @@
       "foundingDate": "2026-06-17",
       "role": "Employer",
       "id": "4HqmkrS0hMo"
+    },
+    {
+      "email": "kapitalbank@gmail.com",
+      "password": "KapitalBank123@",
+      "companyName": "Kapital Bank",
+      "voen": "98746512",
+      "foundingDate": "2004-03-06",
+      "role": "Employer",
+      "id": "VySxcOurzXY"
     }
   ],
   "vacancies": [
     {
       "id": "1",
+      "employerId": "VySxcOurzXY",
       "employer": "Kapital Bank",
-      "work": "IT data analytic",
-      "description": "Pul yoxdu",
+      "work": "IT Data Analyst",
+      "type": "Full-time",
+      "description": "Biz Kapital Bank komandasında məlumatların analizi, hesabatlılığın qurulması və biznes qərarlarının dəstəklənməsi üçün SQL, Python və PowerBI biliklərinə sahib təcrübəli Data Analitik mütəxəssis axtarırıq.",
       "location": "Baku, Azerbaijan",
       "salary": 2900
     },
     {
       "id": "2",
-      "employer": "Uni Bank",
-      "work": "IT data analytic",
-      "description": "Komandamıza məsuliyyətli, nəticəyönümlü mütəxəssis axtarırıq.",
+      "employer": "Unibank",
+      "work": "Data Scientist",
+      "type": "Hybrid",
+      "description": "Unibank Rəqəmsal Bankçılıq departamentinə maşın öyrənməsi (Machine Learning) modellərinin qurulması, Python (Pandas, NumPy, Scikit-learn) və böyük məlumat bazaları (Big Data) ilə işləyə biləcək komanda yoldaşı dəvət olunur.",
       "location": "Baku, Azerbaijan",
       "salary": 2000
     },
     {
       "id": "3",
-      "employer": "Azərbaycan Beynəlxalq Bank",
-      "work": "IT data analytic",
-      "description": "Komandamıza məsuliyyətli, nəticəyönümlü mütəxəssis axtarırıq.",
+      "employer": "ABB (Azərbaycan Beynəlxalq Bankı)",
+      "work": "Business Intelligence (BI) Developer",
+      "type": "Remote",
+      "description": "ABB komandasında bankın daxili sistemlərindən məlumatların ETL prosesləri ilə çəkilməsi, verilənlər anbarının (Data Warehouse) idarə edilməsi və analitik panellərin (Dashboards) vizuallaşdırılması üzrə vakansiya aktivdir.",
       "location": "Baku, Azerbaijan",
       "salary": 1300
     },
     {
       "id": "4",
       "employer": "Yelo Bank",
-      "work": "IT Help Desk",
-      "description": "Komandamıza məsuliyyətli, nəticəyönümlü mütəxəssis axtarırıq.",
+      "work": "IT Help Desk Specialist",
+      "type": "Full-time",
+      "description": "Komandamıza bankdaxili kompüter şəbəkələrinin, proqram təminatlarının və texniki avadanlıqların fasiləsiz işləməsini təmin edəcək, istifadəçilərə texniki dəstək göstərəcək məsuliyyətli mütəxəssis axtarırıq.",
       "location": "Baku, Azerbaijan",
       "salary": 1800
+    },
+    {
+      "id": "5",
+      "employer": "PASHA Bank",
+      "work": "Senior Frontend Developer",
+      "type": "Hybrid",
+      "description": "PASHA Bank rəqəmsal məhsullar komandasına React.js, Redux Toolkit, TypeScript və unit test (Jest) təcrübəsi olan təcrübəli Senior Frontend mütəxəssis axtarılır.",
+      "location": "Baku, Azerbaijan",
+      "salary": 3800
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
