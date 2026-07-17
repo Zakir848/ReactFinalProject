@@ -1,0 +1,84 @@
+{
+  "users": [
+    {
+      "id": "2",
+      "name": "Zakir",
+      "surname": "Abilov",
+      "username": "zakir001",
+      "password": "zakir123",
+      "email": "zakir@gmail.com",
+      "age": "21",
+      "gender": "Male",
+      "role": "Worker",
+      "birthday": "2005-08-07"
+    },
+    {
+      "id": "3",
+      "name": "Sebine",
+      "surname": "Samdybayev",
+      "username": "sabina001",
+      "password": "sabine123",
+      "email": "sabina@gmail.com",
+      "age": "18",
+      "gender": "Female",
+      "role": "Worker",
+      "birthday": "2008-11-18"
+    },
+    {
+      "name": "Ibrahim",
+      "surname": "Abilov",
+      "username": "ibo_123",
+      "email": "ibo12@gmail.com",
+      "password": "Ibo1234@",
+      "birthday": "2002-03-08",
+      "gender": "Male",
+      "role": "Worker",
+      "age": 24,
+      "id": "wqBlhsxgk8w"
+    },
+    {
+      "email": "zakirabilov023@gmail.com",
+      "password": "ZAkir123@",
+      "companyName": "Lalafo",
+      "voen": "65798186",
+      "foundingDate": "2026-06-17",
+      "role": "Employer",
+      "id": "4HqmkrS0hMo"
+    }
+  ],
+  "vacancies": [
+    {
+      "id": "1",
+      "employer": "Kapital Bank",
+      "work": "IT data analytic",
+      "description": "Pul yoxdu",
+      "location": "Baku, Azerbaijan",
+      "salary": 2900
+    },
+    {
+      "id": "2",
+      "employer": "Uni Bank",
+      "work": "IT data analytic",
+      "description": "Komandamıza məsuliyyətli, nəticəyönümlü mütəxəssis axtarırıq.",
+      "location": "Baku, Azerbaijan",
+      "salary": 2000
+    },
+    {
+      "id": "3",
+      "employer": "Azərbaycan Beynəlxalq Bank",
+      "work": "IT data analytic",
+      "description": "Komandamıza məsuliyyətli, nəticəyönümlü mütəxəssis axtarırıq.",
+      "location": "Baku, Azerbaijan",
+      "salary": 1300
+    },
+    {
+      "id": "4",
+      "employer": "Yelo Bank",
+      "work": "IT Help Desk",
+      "description": "Komandamıza məsuliyyətli, nəticəyönümlü mütəxəssis axtarırıq.",
+      "location": "Baku, Azerbaijan",
+      "salary": 1800
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

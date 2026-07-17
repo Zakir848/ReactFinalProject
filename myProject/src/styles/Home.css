@@ -1,0 +1,69 @@
+.home-page {
+  min-height: calc(100vh - 75px);
+  background-color: #090d16;
+  color: #f8fafc;
+  padding-bottom: 60px;
+}
+
+.home-hero {
+  text-align: center;
+  padding: 60px 20px;
+  background: radial-gradient(circle at center, #1e1b4b 0%, #090d16 70%);
+}
+
+.home-hero h2 {
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: -1px;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-hero p {
+  color: #64748b;
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.vacancies-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  position: relative;
+  padding-left: 14px;
+}
+
+.section-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 4px;
+  background: #3b82f6;
+  border-radius: 2px;
+}
+
+.vacancies-list-container {
+  display: grid;
+  width: 100%;
+}
+
+.footer {
+  width: 100%;
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%);
+}

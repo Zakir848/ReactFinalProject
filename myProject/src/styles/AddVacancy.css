@@ -1,0 +1,7 @@
+.footer {
+  width: 100%;
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%);
+}
