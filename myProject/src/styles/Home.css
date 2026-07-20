@@ -8,7 +8,7 @@
 .home-hero {
   text-align: center;
   padding: 60px 20px;
-  background: radial-gradient(circle at center, #1e1b4b 0%, #090d16 70%);
+  background: var(--hero-bg);
 }
 
 .home-hero h2 {
@@ -16,13 +16,13 @@
   font-weight: 800;
   margin-bottom: 12px;
   letter-spacing: -1px;
-  background: linear-gradient(to right, #fff, #94a3b8);
+  background: var(--hero-title-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .home-hero p {
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 16px;
   max-width: 600px;
   margin: 0 auto;

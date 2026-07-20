@@ -5,8 +5,8 @@ const jobTrack = axios.create({
 });
 
 //users
-export const searchUsers = async (id) => {
-  const response = await jobTrack.get(`/users/${id}`);
+export const searchUsers = async (username) => {
+  const response = await jobTrack.get(`/users?username=${username}`);
   return response.data;
 };
 
@@ -35,3 +35,10 @@ export const searchVacancy = async () => {
   const response = await jobTrack.get(`/vacancies`);
   return response.data;
 };
+
+//Notification
+export const notification = (data) => {
+  const response = jobTrack.post("/notification", data);
+  return response.data;
+};
+

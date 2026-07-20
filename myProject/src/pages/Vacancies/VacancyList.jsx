@@ -130,7 +130,7 @@ export default function VacancyList({ vacancies }) {
 
               <Box mt="auto" pt={1}>
                 <Typography variant="overline" color="text.secondary">
-                  Aylıq əməkhaqqı
+                  Monthly salary
                 </Typography>
                 <Typography variant="h5" color="success.main" fontWeight={800}>
                   {formatSalary(vacancy.salary)} ₼

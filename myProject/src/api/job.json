@@ -39,6 +39,7 @@
     {
       "email": "zakirabilov023@gmail.com",
       "password": "ZAkir123@",
+      "username": "Lalafo",
       "companyName": "Lalafo",
       "voen": "65798186",
       "foundingDate": "2026-06-17",
@@ -48,11 +49,62 @@
     {
       "email": "kapitalbank@gmail.com",
       "password": "KapitalBank123@",
+      "username": "Kapital_Bank",
       "companyName": "Kapital Bank",
       "voen": "98746512",
       "foundingDate": "2004-03-06",
       "role": "Employer",
       "id": "VySxcOurzXY"
+    },
+    {
+      "email": "pashabank@gmail.com",
+      "password": "PashaBank123@",
+      "username": "PASHA_Bank",
+      "companyName": "PASHA Bank",
+      "voen": "14013456",
+      "foundingDate": "2007-06-18",
+      "role": "Employer",
+      "id": "PshBnkOurzAB"
+    },
+    {
+      "email": "azercell@gmail.com",
+      "password": "Azercell123@",
+      "username": "Azercell_Telecom",
+      "companyName": "Azercell",
+      "voen": "20004512",
+      "foundingDate": "1996-12-19",
+      "role": "Employer",
+      "id": "AzrcllOurzCD"
+    },
+    {
+      "email": "socar@gmail.com",
+      "password": "Socar12345@",
+      "username": "SOCAR_Official",
+      "companyName": "SOCAR",
+      "voen": "10018899",
+      "foundingDate": "1992-09-13",
+      "role": "Employer",
+      "id": "ScrofcOurzEF"
+    },
+    {
+      "email": "unibank@gmail.com",
+      "password": "Unibank123@",
+      "username": "Unibank_Az",
+      "companyName": "Unibank",
+      "voen": "13007465",
+      "foundingDate": "2002-10-15",
+      "role": "Employer",
+      "id": "UnbnkOurzGH"
+    },
+    {
+      "email": "abb@gmail.com",
+      "password": "AbbBank123@",
+      "username": "ABB_Bank",
+      "companyName": "ABB",
+      "voen": "11002233",
+      "foundingDate": "1992-01-10",
+      "role": "Employer",
+      "id": "AbbBnkOurzIJ"
     }
   ],
   "vacancies": [
@@ -68,6 +120,7 @@
     },
     {
       "id": "2",
+      "employerId": "UnbnkOurzGH",
       "employer": "Unibank",
       "work": "Data Scientist",
       "type": "Hybrid",
@@ -77,6 +130,7 @@
     },
     {
       "id": "3",
+      "employerId": "AbbBnkOurzIJ",
       "employer": "ABB (Azərbaycan Beynəlxalq Bankı)",
       "work": "Business Intelligence (BI) Developer",
       "type": "Remote",
@@ -86,7 +140,8 @@
     },
     {
       "id": "4",
-      "employer": "Yelo Bank",
+      "employerId": "4HqmkrS0hMo",
+      "employer": "Lalafo",
       "work": "IT Help Desk Specialist",
       "type": "Full-time",
       "description": "Komandamıza bankdaxili kompüter şəbəkələrinin, proqram təminatlarının və texniki avadanlıqların fasiləsiz işləməsini təmin edəcək, istifadəçilərə texniki dəstək göstərəcək məsuliyyətli mütəxəssis axtarırıq.",
@@ -94,13 +149,45 @@
       "salary": 1800
     },
     {
-      "id": "5",
-      "employer": "PASHA Bank",
-      "work": "Senior Frontend Developer",
-      "type": "Hybrid",
-      "description": "PASHA Bank rəqəmsal məhsullar komandasına React.js, Redux Toolkit, TypeScript və unit test (Jest) təcrübəsi olan təcrübəli Senior Frontend mütəxəssis axtarılır.",
+      "work": "Senior FrondEnd Developer",
+      "description": "Peşəkar React və UI bacarığı olan işçilər tələb olunur.",
+      "salary": 1500,
+      "type": "Full-time",
+      "location": "Sumgait, Azerbaijan",
+      "employer": "SOCAR",
+      "employerId": "ScrofcOurzEF",
+      "id": "iQ8Wn39dSeA"
+    },
+    {
+      "work": "FrondEnd Developer",
+      "description": "SARFEWQGFWQEFTWEF",
+      "salary": 3523,
+      "type": "Part-time",
       "location": "Baku, Azerbaijan",
-      "salary": 3800
+      "employer": "SOCAR",
+      "employerId": "ScrofcOurzEF",
+      "id": "KbOzU7QzFyU"
+    },
+    {
+      "work": "FrondEnd Developer",
+      "description": "wethujerytjnetrydjetyj",
+      "salary": 5555,
+      "type": "Part-time",
+      "location": "Sumgait, Azerbaijan",
+      "employer": "SOCAR",
+      "employerId": "ScrofcOurzEF",
+      "id": "Awyy0XZIduc"
+    }
+  ],
+  "notifications": [
+    {
+      "id": 1,
+      "userId": 5,
+      "type": "new_application",
+      "message": "Someone applied to your IT Data Analytic vacancy",
+      "vacancyId": 12,
+      "read": false,
+      "createdAt": "2026-07-20T10:00:00Z"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

@@ -10,7 +10,9 @@ export default function Footer() {
 
   const navItems = [
     { label: "Home", to: "/", icon: HomeRoundedIcon, end: true },
-    { label: "Add Vacancy", to: "/addVacancy", icon: AddBox },
+    currentUser?.role === "Employer"
+      ? { label: "Add Vacancy", to: "/addVacancy", icon: AddBox }
+      : { label: "Salam Vacancy", to: "/addVacancy", icon: AddBox },
     {
       label: "Profile",
       to: currentUser ? `/profile/${currentUser.id}` : `/signin`,

@@ -199,7 +199,7 @@ export default function VacancyDetail() {
             variant="contained"
             fullWidth
             sx={{ mt: 4, height: 50, fontSize: "16px" }}
-            onClick={() => (currentUser ? navigate("/") : navigate("/signin"))}
+            onClick={() => (currentUser ? navigate("/profile/cv") : navigate("/signin"))}
           >
             Apply Now
           </Button>

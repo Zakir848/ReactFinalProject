@@ -6,10 +6,11 @@ import Home from "../pages/Home";
 import PageLayout from "../components/PageLayout";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
-import UserDetail from "../pages/Users/UserDetail";
+import UserAllDetail from "../pages/Users/UserAllDetail";
 import VacancyDetail from "../pages/Vacancies/VacancyDetail";
-import Footer from "../components/Footer";
-import Setting from "../pages/Setting";
+import AddVacancy from "../pages/Vacancies/AddVacancy";
+import UserFavorite from "../pages/Users/UserFavorite";
+import UserCv from "../pages/Users/UserCv";
 
 export default function AppRouter() {
   return (
@@ -22,11 +23,12 @@ export default function AppRouter() {
         </Route>
 
         <Route path="/profile/">
-          <Route path=":id" element={<UserDetail />} />
+          <Route path=":id" element={<UserAllDetail />} />
+          <Route path="myFavorite" element={<UserFavorite />} />
+          <Route path="cv" element={<UserCv />} />
         </Route>
 
-        <Route path="/setting" element={<Setting />}></Route>
-        <Route path="/addVacancy" element={<Footer />} />
+        <Route path="/addVacancy" element={<AddVacancy />} />
 
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />

@@ -204,7 +204,7 @@ export default function SignUp() {
                     <label style={{ color: "gray" }}>
                       Enter the company's founding date.
                     </label>
-                  )}                  
+                  )}
                 </React.Fragment>
               </>
             ) : (

@@ -1,7 +1,33 @@
-* {
-    box-sizing: border-box;
+:root[data-theme="dark"] {
+  --bg-default: #0b0e14;
+  --bg-paper: #151922;
+  --text-primary: #f4f5f7;
+  --text-secondary: #8a8f98;
+  --divider: rgba(255, 255, 255, 0.08);
+  --primary: #5b8def;
+  --success: #3dd68c;
+  --error: #f26d6d;
+  --hero-bg: radial-gradient(circle at center, #1e1b4b 0%, #090d16 70%);
+  --hero-title-gradient: linear-gradient(to right, #fff, #94a3b8);
 }
 
-body{
-    margin: 0;
+:root[data-theme="light"] {
+  --bg-default: #f6f7f9;
+  --bg-paper: #ffffff;
+  --text-primary: #171a21;
+  --text-secondary: #5b616e;
+  --divider: rgba(0, 0, 0, 0.1);
+  --primary: #3b6fe0;
+  --success: #1e9e63;
+  --error: #d64545;
+  --hero-bg: radial-gradient(circle at center, #e8ecfb 0%, #f6f7f9 70%);
+  --hero-title-gradient: linear-gradient(to right, #171a21, #3b6fe0);
+}
+
+body {
+  background-color: var(--bg-default);
+  color: var(--text-primary);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }

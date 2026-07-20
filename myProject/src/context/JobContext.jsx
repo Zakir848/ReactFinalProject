@@ -1,5 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { addUserToServer, getAllVacancies, getAllUsers } from "../api/api";
+import {
+  addUserToServer,
+  getAllVacancies,
+  getAllUsers,
+  searchUsers,
+  addVacanciesToServer,
+  notification,
+} from "../api/api";
 import { set } from "react-hook-form";
 
 const JobContextCreate = createContext();
@@ -24,12 +31,25 @@ export default function JobContext({ children }) {
       }
     }
     load();
-  }, []);
+  }, [users, vacancies]);
 
   useEffect(() => {
     const saved = localStorage.getItem("currentUser");
     if (saved) setCurrentUser(JSON.parse(saved));
   }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [currentUser]);
+
+  const searchUser = async (username) => {
+    console.log(username);
+    await searchUsers(username);
+  };
 
   const addUser = async (data) => {
     try {
@@ -41,6 +61,22 @@ export default function JobContext({ children }) {
       console.error("Failed to add user:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const addVacancies = async (data) => {
+    try {
+      await addVacanciesToServer(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const sendNotification = async (data) => {
+    try {
+      await notification(data);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -63,7 +99,19 @@ export default function JobContext({ children }) {
 
   return (
     <JobContextCreate.Provider
-      value={{ users, vacancies, currentUser, loading, addUser, login, logOut }}
+      value={{
+        users,
+        vacancies,
+        currentUser,
+        loading,
+        setLoading,
+        addUser,
+        login,
+        logOut,
+        searchUser,
+        addVacancies,
+        sendNotification,
+      }}
     >
       {children}
     </JobContextCreate.Provider>
