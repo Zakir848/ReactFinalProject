@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
+import Footer from "../../components/Footer";
 
 export default function UserCv() {
   const {
@@ -23,7 +24,6 @@ export default function UserCv() {
   const LANGUAGES = ["Russian", "English", "Azerbaijani"];
 
   const onSubmit = (data) => {
-    
     reset();
   };
 
@@ -55,14 +55,26 @@ export default function UserCv() {
             fullWidth
             error={!!errors.name}
             helperText={errors.name?.message}
-            {...register("name", { required: "Name is required" })}
+            {...register("name", {
+              required: "Name is required",
+              pattern: {
+                value: /^[a-zA-ZçÇğĞıİöÖşŞüÜəƏ]+$/,
+                message: "Only letters",
+              },
+            })}
           />
           <TextField
             label="Surname"
             fullWidth
             error={!!errors.surname}
             helperText={errors.surname?.message}
-            {...register("surname", { required: "Surname is required" })}
+            {...register("surname", {
+              required: "Surname is required",
+              pattern: {
+                value: /^[a-zA-ZçÇğĞıİöÖşŞüÜəƏ]+$/,
+                message: "Only letters",
+              },
+            })}
           />
         </Box>
 
@@ -95,6 +107,16 @@ export default function UserCv() {
           error={!!errors.address}
           helperText={errors.address?.message}
           {...register("address", { required: "Address is required" })}
+        />
+
+        <TextField
+          label="Education"
+          fullWidth
+          error={!!errors.education}
+          helperText={errors.education?.message}
+          {...register("education", {
+            required: "Education is required",
+          })}
         />
 
         <TextField
@@ -131,7 +153,7 @@ export default function UserCv() {
           size="large"
           sx={{ height: 48, mt: 1 }}
         >
-          Send
+          Save
         </Button>
       </Paper>
     </Box>

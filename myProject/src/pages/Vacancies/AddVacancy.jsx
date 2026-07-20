@@ -238,9 +238,6 @@ export default function AddVacancy() {
           </Button>
         </Paper>
       </Box>
-      <footer className="footer">
-        <Footer />
-      </footer>
     </>
   );
 }

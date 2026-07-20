@@ -27,7 +27,7 @@ import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import VerifiedSymbol from "./VerifiedSymbol";
 
 export default function Header() {
-  const { users, currentUser, logOut } = useContextFunc();
+  const { users, currentUser, logOut, isTurnOff } = useContextFunc();
   const [searchParams, setSearchParams] = useSearchParams("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchAnchorEl, setSearchAnchorEl] = useState(null);
@@ -97,7 +97,6 @@ export default function Header() {
             display: "flex",
             alignItems: "center",
             gap: 1,
-            flexGrow: 2,
           }}
         >
           <Box
@@ -125,6 +124,7 @@ export default function Header() {
           sx={{
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
             gap: 1,
             textDecoration: "none",
             color: "text.primary",
@@ -263,21 +263,9 @@ export default function Header() {
             </Button>
           </Box>
         )}
-        <Button
-          onClick={() => navigate("profile/myFavorite")}
-          sx={{
-            bgcolor: "primary.main",
-            color: "text.primary",
-            "&:hover": {
-              bgcolor: "text.secondary",
-            },
-            ml: 1,
-          }}
-        >
-          My Favorite
-        </Button>
+
         <IconButton>
-          <Badge badgeContent={99} color="error">
+          <Badge badgeContent={isTurnOff ? 3 : 0} color="error">
             <Notification />
           </Badge>
         </IconButton>

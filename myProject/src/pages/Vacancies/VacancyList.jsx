@@ -8,11 +8,13 @@ import {
   Divider,
   Avatar,
   Stack,
+  Checkbox,
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import WorkIcon from "@mui/icons-material/Work";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useNavigate } from "react-router-dom";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { useContextFunc } from "../../context/JobContext";
 
 function formatSalary(value) {
@@ -20,7 +22,7 @@ function formatSalary(value) {
 }
 
 export default function VacancyList({ vacancies }) {
-  const { currentUser } = useContextFunc();
+  const { toggleFavorite, currentUser, favorite } = useContextFunc();
   const navigate = useNavigate();
 
   if (!vacancies || vacancies.length === 0) {
@@ -61,6 +63,12 @@ export default function VacancyList({ vacancies }) {
       {vacancies.map((vacancy) => {
         const initial =
           vacancy.employer?.trim()?.charAt(0)?.toUpperCase() || "?";
+        const isFavorite = favorite.some(
+          (fav) => (
+            currentUser?.id === fav.userId,
+            fav.vacancyId === vacancy.id
+          ),
+        );
         return (
           <Card
             key={vacancy.id}
@@ -79,39 +87,57 @@ export default function VacancyList({ vacancies }) {
               <Stack
                 direction="row"
                 spacing={1.5}
-                sx={{ placeItems: "center" }}
+                sx={{ placeContent: "space-between", placeItems: "center" }}
                 mb={2}
               >
-                <Avatar
+                <Box
                   sx={{
-                    bgcolor: "primary.main",
-                    width: 42,
-                    height: 42,
-                    fontWeight: 700,
+                    display: "flex",
+                    gap: 1.5,
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
-                  aria-label={`${vacancy.employer} loqosu`}
                 >
-                  {initial}
-                </Avatar>
-                <Box sx={{ minWidth: 0 }}>
-                  <Typography variant="subtitle1" noWrap>
-                    {vacancy.employer}
-                  </Typography>
-                  {vacancy.location && (
-                    <Stack
-                      direction="row"
-                      spacing={0.5}
-                      sx={{ placeItems: "center" }}
-                    >
-                      <LocationOnIcon
-                        sx={{ fontSize: 14, color: "text.secondary" }}
-                      />
-                      <Typography variant="caption" color="text.secondary">
-                        {vacancy.location}
-                      </Typography>
-                    </Stack>
-                  )}
+                  <Avatar
+                    sx={{
+                      bgcolor: "primary.main",
+                      width: 42,
+                      height: 42,
+                      fontWeight: 700,
+                    }}
+                    aria-label={`${vacancy.employer} loqosu`}
+                  >
+                    {initial}
+                  </Avatar>
+                  <Box sx={{ minWidth: 0 }}>
+                    <Typography variant="subtitle1" noWrap>
+                      {vacancy.employer}
+                    </Typography>
+                    {vacancy.location && (
+                      <Stack
+                        direction="row"
+                        spacing={0.5}
+                        sx={{ placeItems: "center" }}
+                      >
+                        <LocationOnIcon
+                          sx={{ fontSize: 14, color: "text.secondary" }}
+                        />
+                        <Typography variant="caption" color="text.secondary">
+                          {vacancy.location}
+                        </Typography>
+                      </Stack>
+                    )}
+                  </Box>
                 </Box>
+                <Checkbox
+                  icon={<FavoriteBorder />}
+                  checkedIcon={<Favorite />}
+                  checked={isFavorite}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite(vacancy.id);
+                  }}
+                />
               </Stack>
 
               <Divider sx={{ mt: 1, mb: 3 }} />
@@ -146,7 +172,7 @@ export default function VacancyList({ vacancies }) {
                 onClick={() => navigate(`/vacancy/${vacancy.id}`)}
                 sx={{ height: 42 }}
               >
-                Ətraflı bax
+                Learn more
               </Button>
             </CardActions>
           </Card>

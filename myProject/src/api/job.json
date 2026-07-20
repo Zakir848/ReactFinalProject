@@ -131,7 +131,7 @@
     {
       "id": "3",
       "employerId": "AbbBnkOurzIJ",
-      "employer": "ABB (Azərbaycan Beynəlxalq Bankı)",
+      "employer": "ABB",
       "work": "Business Intelligence (BI) Developer",
       "type": "Remote",
       "description": "ABB komandasında bankın daxili sistemlərindən məlumatların ETL prosesləri ilə çəkilməsi, verilənlər anbarının (Data Warehouse) idarə edilməsi və analitik panellərin (Dashboards) vizuallaşdırılması üzrə vakansiya aktivdir.",
@@ -181,13 +181,30 @@
   ],
   "notifications": [
     {
-      "id": 1,
+      "id": "1",
       "userId": 5,
       "type": "new_application",
       "message": "Someone applied to your IT Data Analytic vacancy",
       "vacancyId": 12,
       "read": false,
       "createdAt": "2026-07-20T10:00:00Z"
+    }
+  ],
+  "cv": [
+    {
+      "id": "4AgvFUXnA0M"
+    }
+  ],
+  "favorite": [
+    {
+      "userId": "ScrofcOurzEF",
+      "vacancyId": "1",
+      "id": "R3IU2hRlXds"
+    },
+    {
+      "userId": "ScrofcOurzEF",
+      "vacancyId": "2",
+      "id": "A8w-WSqyWFg"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

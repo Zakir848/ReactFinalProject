@@ -60,9 +60,6 @@ export default function Home() {
           <VacancyList vacancies={vacancies} />
         </Box>
       </Box>
-      <footer className="footer">
-        <Footer />
-      </footer>
     </>
   );
 }

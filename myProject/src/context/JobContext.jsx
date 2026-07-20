@@ -6,24 +6,31 @@ import {
   searchUsers,
   addVacanciesToServer,
   notification,
+  addFavoriteToServer,
+  getAllFavorites,
+  deleteInServer,
 } from "../api/api";
-import { set } from "react-hook-form";
 
 const JobContextCreate = createContext();
 
 export default function JobContext({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [users, setUsers] = useState([]);
+  const [favorite, setFavorite] = useState([]);
   const [vacancies, setVacancies] = useState([]);
+  const [isClicked, setIsClicked] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isTurnOff, setIsTurnOff] = useState(false);
 
   useEffect(() => {
     async function load() {
       try {
-        const users = await getAllUsers();
-        const vacancies = await getAllVacancies();
-        setUsers(users);
-        setVacancies(vacancies);
+        const usersInServer = await getAllUsers();
+        const vacanciesInServer = await getAllVacancies();
+        const favoriteInServer = await getAllFavorites();
+        setUsers(usersInServer);
+        setVacancies(vacanciesInServer);
+        setFavorite(favoriteInServer);
       } catch (error) {
         console.error("Problem get process: ", error);
       } finally {
@@ -31,7 +38,7 @@ export default function JobContext({ children }) {
       }
     }
     load();
-  }, [users, vacancies]);
+  }, []);
 
   useEffect(() => {
     const saved = localStorage.getItem("currentUser");
@@ -42,7 +49,7 @@ export default function JobContext({ children }) {
     if (currentUser) {
       localStorage.setItem("currentUser", JSON.stringify(currentUser));
     } else {
-      localStorage.removeItem("user");
+      localStorage.removeItem("currentUser");
     }
   }, [currentUser]);
 
@@ -80,6 +87,36 @@ export default function JobContext({ children }) {
     }
   };
 
+  const toggleFavorite = async (vacancyId) => {
+    if (!currentUser) return;
+
+    if (!vacancyId) {
+      console.error("toggleFavorite called without a vacancyId");
+      return;
+    }
+
+    const existing = favorite.find(
+      (fav) => fav.userId === currentUser.id && fav.vacancyId === vacancyId,
+    );
+
+    try {
+      if (existing) {
+        await deleteInServer(existing.id);
+        setFavorite((prev) => prev.filter((fav) => fav.id !== existing.id));
+        setIsClicked(false);
+      } else {
+        const newFavorite = await addFavoriteToServer({
+          userId: currentUser.id,
+          vacancyId,
+        });
+        setFavorite((prev) => [...prev, newFavorite]);
+        setIsClicked(true);
+      }
+    } catch (error) {
+      console.error("Failed to toggle favorite:", error);
+    }
+  };
+
   const login = (userData) => {
     try {
       setLoading(true);
@@ -104,6 +141,10 @@ export default function JobContext({ children }) {
         vacancies,
         currentUser,
         loading,
+        favorite,
+        isClicked,
+        isTurnOff,
+        setIsTurnOff,
         setLoading,
         addUser,
         login,
@@ -111,6 +152,7 @@ export default function JobContext({ children }) {
         searchUser,
         addVacancies,
         sendNotification,
+        toggleFavorite,
       }}
     >
       {children}

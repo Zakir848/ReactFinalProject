@@ -15,6 +15,7 @@ import WorkIcon from "@mui/icons-material/Work";
 import { useContextFunc } from "../../context/JobContext";
 import { useNavigate, useParams } from "react-router-dom";
 import Footer from "../../components/Footer";
+import { useState } from "react";
 
 function formatSalary(value) {
   if (!value) return "Razılaşma yolu ilə";
@@ -199,15 +200,14 @@ export default function VacancyDetail() {
             variant="contained"
             fullWidth
             sx={{ mt: 4, height: 50, fontSize: "16px" }}
-            onClick={() => (currentUser ? navigate("/profile/cv") : navigate("/signin"))}
+            onClick={() =>
+              currentUser ? navigate("/profile/cv") : navigate("/signin")
+            }
           >
             Apply Now
           </Button>
         </CardContent>
       </Card>
-      <footer className="footer">
-        <Footer />
-      </footer>
     </Box>
   );
 }

@@ -1,7 +1,8 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import AddBox from "@mui/icons-material/AddBox";
 import { useContextFunc } from "../context/JobContext";
 
@@ -12,7 +13,12 @@ export default function Footer() {
     { label: "Home", to: "/", icon: HomeRoundedIcon, end: true },
     currentUser?.role === "Employer"
       ? { label: "Add Vacancy", to: "/addVacancy", icon: AddBox }
-      : { label: "Salam Vacancy", to: "/addVacancy", icon: AddBox },
+      : { label: "Add CV", to: "/addVacancy", icon: AddBox },
+    {
+      label: "My Favorite",
+      to: currentUser ? `/profile/myFavorite` : `/signin`,
+      icon: FavoriteRoundedIcon,
+    },
     {
       label: "Profile",
       to: currentUser ? `/profile/${currentUser.id}` : `/signin`,
@@ -24,23 +30,22 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         position: "sticky",
         bottom: 0,
-        left: 0,
-        right: 0,
+        gap: 4,
         bgcolor: "background.paper",
         borderTop: "1px solid",
         borderColor: "divider",
-        display: "flex",
-        justifyContent: "center",
-        gap: { xs: 4, sm: 6 },
         py: 1.2,
-        zIndex: 10,
       }}
     >
       {navItems.map(({ label, to, icon: Icon, end }) => (
         <Box
-          key={to}
+          key={label}
           component={NavLink}
           to={to}
           end={end}

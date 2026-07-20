@@ -27,7 +27,7 @@ export const getAllVacancies = async () => {
 };
 
 export const addVacanciesToServer = async (data) => {
-  const response = await jobTrack.post(`/vacancies  `, data);
+  const response = await jobTrack.post(`/vacancies`, data);
   return response.data;
 };
 
@@ -37,8 +37,22 @@ export const searchVacancy = async () => {
 };
 
 //Notification
-export const notification = (data) => {
-  const response = jobTrack.post("/notification", data);
+export const notification = async (data) => {
+  const response = await jobTrack.post("/notification", data);
   return response.data;
 };
 
+export const getAllFavorites = async () => {
+  const response = await jobTrack.get("/favorite");
+  return response.data;
+};
+
+export const addFavoriteToServer = async (data) => {
+  const response = await jobTrack.post("/favorite", data);
+  return response.data;
+};
+
+export const deleteInServer = async (id) => {
+  const response = await jobTrack.delete(`/favorite/${id}`);
+  return response.data;
+};

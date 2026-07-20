@@ -18,13 +18,8 @@ import {
   FormControl,
 } from "@mui/material";
 import PhotoCameraRoundedIcon from "@mui/icons-material/PhotoCameraRounded";
-import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
-import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
-import { useColorMode } from "../../theme";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
 import { useContextFunc } from "../../context/JobContext";
-import Footer from "../../components/Footer";
 
 function SectionCard({ title, description, children }) {
   return (
@@ -49,15 +44,10 @@ export default function UserAllDetail() {
   const {
     register,
     handleSubmit,
-    unregister,
     formState: { errors },
   } = useForm();
 
-  const { mode, toggleMode } = useColorMode();
-  const { currentUser, loading } = useContextFunc();
-  const { id } = useParams();
-  console.log(currentUser);
-
+  const { currentUser, loading, isTurnOff, setIsTurnOff } = useContextFunc();
   const displayName = currentUser?.name || currentUser?.companyName || "";
   const initials = displayName.trim().charAt(0).toUpperCase() || "?";
 
@@ -163,6 +153,13 @@ export default function UserAllDetail() {
             />
             <TextField
               label="Telefon"
+              type="number"
+              sx={{
+                "& input[type=number]::-webkit-inner-spin-button": {
+                  WebkitAppearance: "none",
+                  margin: 0,
+                },
+              }}
               defaultValue={currentUser?.phone || ""}
               fullWidth
               size="small"
@@ -176,7 +173,6 @@ export default function UserAllDetail() {
           </form>
         </SectionCard>
 
-        {/* GÖRÜNÜŞ */}
         <SectionCard>
           <FormControl size="small" fullWidth>
             <InputLabel id="lang-label">Language</InputLabel>
@@ -188,23 +184,19 @@ export default function UserAllDetail() {
           </FormControl>
         </SectionCard>
 
-        {/* BİLDİRİŞLƏR */}
         <SectionCard title="Bildirişlər">
           <FormControlLabel
-            control={<Switch defaultChecked />}
-            label="Yeni vakansiyalar barədə email"
-          />
-          <FormControlLabel
-            control={<Switch defaultChecked />}
+            control={
+              <Switch
+                defaultChecked
+                checked={isTurnOff}
+                onClick={() => setIsTurnOff(!isTurnOff)}
+              />
+            }
             label="Müraciət statusu dəyişəndə bildiriş"
-          />
-          <FormControlLabel
-            control={<Switch />}
-            label="Marketinq və kampaniya email-ləri"
           />
         </SectionCard>
 
-        {/* TƏHLÜKƏSİZLİK */}
         <SectionCard title="Təhlükəsizlik">
           <TextField
             label="Cari şifrə"
@@ -229,7 +221,6 @@ export default function UserAllDetail() {
           </Box>
         </SectionCard>
 
-        {/* TƏHLÜKƏLİ ZONA */}
         <Card sx={{ borderColor: "error.main" }}>
           <CardContent sx={{ p: 3 }}>
             <Typography variant="h6" color="error.main" mb={0.5}>
@@ -244,7 +235,6 @@ export default function UserAllDetail() {
           </CardContent>
         </Card>
       </Box>
-      <Footer />
     </>
   );
 }
