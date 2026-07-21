@@ -11,6 +11,7 @@ import VacancyDetail from "../pages/Vacancies/VacancyDetail";
 import AddVacancy from "../pages/Vacancies/AddVacancy";
 import UserFavorite from "../pages/Users/UserFavorite";
 import UserCv from "../pages/Users/UserCv";
+import Notifications from "../pages/Notifications";
 
 export default function AppRouter() {
   return (
@@ -19,13 +20,14 @@ export default function AppRouter() {
         <Route path="/" element={<Home />} />
 
         <Route path="/vacancy/">
-          <Route path=":id" element={<VacancyDetail />} />
+          <Route path=":vacancyId" element={<VacancyDetail />} />
         </Route>
 
         <Route path="/profile/">
           <Route path=":id" element={<UserAllDetail />} />
           <Route path="myFavorite" element={<UserFavorite />} />
-          <Route path="cv" element={<UserCv />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="cv/:vacancyId" element={<UserCv />} />
         </Route>
 
         <Route path="/addVacancy" element={<AddVacancy />} />

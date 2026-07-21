@@ -15,7 +15,7 @@ import {
   Paper,
   Backdrop,
 } from "@mui/material";
-import PhotoCameraRoundedIcon from "@mui/icons-material/PhotoCameraRounded";
+
 import { useForm } from "react-hook-form";
 import { useContextFunc } from "../../context/JobContext";
 import { Warning } from "@mui/icons-material";
@@ -33,7 +33,7 @@ function SectionCard({ title, description, children }) {
             {description}
           </Typography>
         )}
-        {description && <Divider sx={{ mb: 2.5 }} />}
+        {description && <Divider sx={{ mb: 2.5, mt: 1 }} />}
         <Stack spacing={2.5}>{children}</Stack>
       </CardContent>
     </Card>
@@ -106,45 +106,16 @@ export default function UserAllDetail() {
           Setting
         </Typography>
 
-        <SectionCard
-          title="Profil"
-          description="Hesab məlumatlarını burada dəyiş"
-        >
-          <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
-            <Box sx={{ position: "relative" }}>
-              <Avatar
-                sx={{
-                  width: 72,
-                  height: 72,
-                  fontSize: 26,
-                  fontWeight: 700,
-                  bgcolor: "primary.main",
-                }}
-              >
-                {initials}
-              </Avatar>
-              <IconButton
-                size="small"
-                sx={{
-                  position: "absolute",
-                  bottom: -4,
-                  right: -4,
-                  bgcolor: "background.paper",
-                  border: "1px solid",
-                  borderColor: "divider",
-                  "&:hover": { bgcolor: "background.default" },
-                }}
-                aria-label="şəkli dəyiş"
-              >
-                <PhotoCameraRoundedIcon fontSize="small" />
-              </IconButton>
-            </Box>
-            <Typography variant="body2" color="text.secondary">
-              JPG və ya PNG, maks. 2MB
-            </Typography>
-          </Stack>
-
-          <Paper component="form" onSubmit={profileForm.handleSubmit(saveForm)}>
+        <SectionCard title="Profile" description="Change account details here">
+          <Stack
+            component="form"
+            onSubmit={profileForm.handleSubmit(saveForm)}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+            }}
+          >
             {role ? (
               <>
                 <TextField
@@ -219,13 +190,13 @@ export default function UserAllDetail() {
 
             <Box>
               <Button variant="contained" type="submit">
-                Yadda saxla
+                Save
               </Button>
             </Box>
-          </Paper>
+          </Stack>
         </SectionCard>
 
-        <SectionCard title="Bildirişlər">
+        <SectionCard title="Notifications">
           <FormControlLabel
             control={
               <Switch
@@ -233,7 +204,7 @@ export default function UserAllDetail() {
                 onChange={(e) => setIsTurnOff(e.target.checked)}
               />
             }
-            label="Müraciət statusu dəyişəndə bildiriş"
+            label="Notification when the application status changes"
           />
         </SectionCard>
 
@@ -241,9 +212,9 @@ export default function UserAllDetail() {
           component="form"
           onSubmit={passwordForm.handleSubmit(handleChangePassword)}
         >
-          <SectionCard title="Təhlükəsizlik">
+          <SectionCard title="Security">
             <TextField
-              label="Cari şifrə"
+              label="Current password"
               type="password"
               fullWidth
               size="small"
@@ -261,7 +232,7 @@ export default function UserAllDetail() {
               })}
             />
             <TextField
-              label="Yeni şifrə"
+              label="New password"
               type="password"
               fullWidth
               size="small"
@@ -286,7 +257,7 @@ export default function UserAllDetail() {
               })}
             />
             <TextField
-              label="Yeni şifrə (təkrar)"
+              label="New password (repeat)"
               type="password"
               fullWidth
               size="small"
@@ -303,7 +274,7 @@ export default function UserAllDetail() {
             />
             <Box>
               <Button variant="outlined" type="submit">
-                Şifrəni dəyiş
+                Change Password
               </Button>
             </Box>
           </SectionCard>
@@ -312,10 +283,10 @@ export default function UserAllDetail() {
         <Card sx={{ borderColor: "error.main" }}>
           <CardContent sx={{ p: 3 }}>
             <Typography variant="h6" color="error.main" mb={0.5}>
-              Hesabı sil
+              Delete Account
             </Typography>
             <Typography variant="body2" color="text.secondary" mb={2.5}>
-              Bu əməliyyat geri qaytarılmır. Bütün məlumatların silinəcək.
+              This operation cannot be undone. All data will be deleted.
             </Typography>
             <Button
               variant="outlined"
@@ -323,7 +294,7 @@ export default function UserAllDetail() {
               onClick={handleAlertCase}
               sx={{ mt: 2 }}
             >
-              Hesabımı sil
+              Delete my account
             </Button>
             <Backdrop
               open={alertDelete}

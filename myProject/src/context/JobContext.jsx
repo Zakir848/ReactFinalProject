@@ -5,13 +5,16 @@ import {
   getAllUsers,
   searchUsers,
   addVacanciesToServer,
-  notification,
   addFavoriteToServer,
   getAllFavorites,
   deleteInServer,
   changePasswordFromServer,
   deleteUserInServer,
   addCvToServer,
+  getAllCv,
+  getAllNotification,
+  AddNotificationToServer,
+  changeNotificationStatus,
 } from "../api/api";
 
 const JobContextCreate = createContext();
@@ -21,6 +24,8 @@ export default function JobContext({ children }) {
   const [users, setUsers] = useState([]);
   const [favorite, setFavorite] = useState([]);
   const [vacancies, setVacancies] = useState([]);
+  const [cv, setCv] = useState([]);
+  const [notifications, setNotifications] = useState([]);
   const [isClicked, setIsClicked] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isTurnOff, setIsTurnOff] = useState(false);
@@ -31,9 +36,13 @@ export default function JobContext({ children }) {
         const usersInServer = await getAllUsers();
         const vacanciesInServer = await getAllVacancies();
         const favoriteInServer = await getAllFavorites();
+        const cvInServer = await getAllCv();
+        const notificationInServer = await getAllNotification();
         setUsers(usersInServer);
         setVacancies(vacanciesInServer);
         setFavorite(favoriteInServer);
+        setCv(cvInServer);
+        setNotifications(notificationInServer);
       } catch (error) {
         console.error("Problem get process: ", error);
       } finally {
@@ -101,9 +110,17 @@ export default function JobContext({ children }) {
     }
   };
 
+  const changeNotificationFromStatus = async (id) => {
+    try {
+      await changeNotificationStatus(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const sendNotification = async (data) => {
     try {
-      await notification(data);
+      await AddNotificationToServer(data);
     } catch (error) {
       console.log(error);
     }
@@ -181,6 +198,8 @@ export default function JobContext({ children }) {
         currentUser,
         loading,
         favorite,
+        notifications,
+        cv,
         isClicked,
         isTurnOff,
         setIsTurnOff,
@@ -191,6 +210,7 @@ export default function JobContext({ children }) {
         changePassword,
         login,
         logOut,
+        changeNotificationFromStatus,
         searchUser,
         addVacancies,
         sendNotification,

@@ -24,11 +24,12 @@ function formatSalary(value) {
 
 export default function VacancyDetail() {
   const { vacancies, currentUser } = useContextFunc();
-  const { id } = useParams();
+  const { vacancyId } = useParams();
 
   const navigate = useNavigate();
 
-  const vacancy = vacancies.find((item) => item.id === id);
+  const vacancy = vacancies.find((item) => item.id === vacancyId);
+
   const employerInitial =
     vacancy?.employer?.trim()?.charAt(0)?.toUpperCase() || "?";
 
@@ -196,16 +197,20 @@ export default function VacancyDetail() {
             </Typography>
           </Box>
 
-          <Button
-            variant="contained"
-            fullWidth
-            sx={{ mt: 4, height: 50, fontSize: "16px" }}
-            onClick={() =>
-              currentUser ? navigate("/profile/cv") : navigate("/signin")
-            }
-          >
-            Apply Now
-          </Button>
+          {currentUser.role === "Worker" && (
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{ mt: 4, height: 50, fontSize: "16px" }}
+              onClick={() =>
+                currentUser
+                  ? navigate(`/profile/cv/${vacancy.id}`)
+                  : navigate("/signin")
+              }
+            >
+              Apply Now
+            </Button>
+          )}
         </CardContent>
       </Card>
     </Box>

@@ -15,8 +15,33 @@ export const getAllUsers = async () => {
   return response.data;
 };
 
+export const getAllVacancies = async () => {
+  const response = await jobTrack.get(`/vacancies`);
+  return response.data;
+};
+
+export const getAllFavorites = async () => {
+  const response = await jobTrack.get("/favorite");
+  return response.data;
+};
+
+export const getAllNotification = async () => {
+  const response = await jobTrack.get("/notifications");
+  return response.data;
+};
+
+export const getAllCv = async () => {
+  const response = await jobTrack.get("/cv");
+  return response.data;
+};
+
 export const addUserToServer = async (data) => {
   const response = await jobTrack.post(`/users`, data);
+  return response.data;
+};
+
+export const AddNotificationToServer = async (data) => {
+  const response = await jobTrack.post("/notifications", data);
   return response.data;
 };
 
@@ -36,15 +61,11 @@ export const deleteUserInServer = async (id) => {
 //AAAA
 
 export const addCvToServer = async (data) => {
-  const response = await jobTrack.post(`/cv/`,data);
+  const response = await jobTrack.post(`/cv/`, data);
   return response.data;
 };
 
 //Vacancies
-export const getAllVacancies = async () => {
-  const response = await jobTrack.get(`/vacancies`);
-  return response.data;
-};
 
 export const addVacanciesToServer = async (data) => {
   const response = await jobTrack.post(`/vacancies`, data);
@@ -57,13 +78,11 @@ export const searchVacancy = async () => {
 };
 
 //Notification
-export const notification = async (data) => {
-  const response = await jobTrack.post("/notification", data);
-  return response.data;
-};
 
-export const getAllFavorites = async () => {
-  const response = await jobTrack.get("/favorite");
+export const changeNotificationStatus = async (id) => {
+  const response = await jobTrack.patch(`/notifications/${id}`, {
+    unread: true,
+  });
   return response.data;
 };
 

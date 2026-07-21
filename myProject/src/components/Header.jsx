@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   AppBar,
@@ -31,7 +31,8 @@ import VerifiedSymbol from "./VerifiedSymbol";
 import { flex } from "@mui/system";
 
 export default function Header() {
-  const { users, currentUser, logOut, isTurnOff, vacancies } = useContextFunc();
+  const { users, currentUser, logOut, isTurnOff, vacancies, notifications } =
+    useContextFunc();
   const [searchParams, setSearchParams] = useSearchParams("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchAnchorEl, setSearchAnchorEl] = useState(null);
@@ -66,6 +67,10 @@ export default function Header() {
     );
   }, [users, searchUsers, searchCompanyName, type]);
 
+  useEffect(()=>{
+
+  })
+
   const filterVacancy = useMemo(() => {
     if (type !== "SearchTask" || !searchByTask) return [];
 
@@ -73,6 +78,16 @@ export default function Header() {
       vacancy?.work?.toLowerCase().startsWith(searchByTask.toLowerCase()),
     );
   }, [vacancies, searchByTask, type]);
+
+  const myNotifications = notifications.filter((notification) => {
+    const vacancy = vacancies.find(
+      (vacancy) =>
+        vacancy.id === notification.vacancyId &&
+        vacancy.employerId === currentUser.id,
+    );
+
+    return vacancy;
+  });
 
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -269,11 +284,11 @@ export default function Header() {
                       <span>
                         {isWorker
                           ? `${user.name} ${user.surname}`
-                          : user.companyName}{" "}
-                        <VerifiedSymbol />
+                          : user.companyName}
                       </span>
                       <span>
                         <>@{user?.username}</>
+                        {isWorker ? "" : <VerifiedSymbol />}
                       </span>
                     </Stack>
                   </MenuItem>
@@ -369,8 +384,17 @@ export default function Header() {
           </Box>
         )}
 
-        <IconButton>
-          <Badge badgeContent={isTurnOff ? 3 : 0} color="error">
+        <IconButton
+          onClick={() =>
+            currentUser
+              ? navigate("/profile/notifications")
+              : navigate("/signin")
+          }
+        >
+          <Badge
+            badgeContent={isTurnOff ? myNotifications.length : 0}
+            color="error"
+          >
             <Notification />
           </Badge>
         </IconButton>

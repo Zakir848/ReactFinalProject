@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
@@ -7,7 +7,8 @@ import AddBox from "@mui/icons-material/AddBox";
 import { useContextFunc } from "../context/JobContext";
 
 export default function Footer() {
-  const { currentUser } = useContextFunc();
+  const { currentUser, vacancies } = useContextFunc();
+  const { vacancyId } = useParams();
   const navigate = useNavigate();
 
   const navItems = [
@@ -18,7 +19,7 @@ export default function Footer() {
     },
     {
       label: currentUser?.role === "Employer" ? "Add Vacancy" : "Add CV",
-      to: "/addVacancy",
+      to: currentUser?.role === "Employer" ? "/addVacancy" : "/profile/cv/",
       icon: AddBox,
       requiresAuth: true,
     },

@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useContextFunc } from "../../context/JobContext";
+import { useParams } from "react-router-dom";
 
 export default function UserCv() {
   const {
@@ -23,14 +24,21 @@ export default function UserCv() {
 
   const LANGUAGES = ["Russian", "English", "Azerbaijan"];
 
-  const { addCv, currentUser } = useContextFunc();
+  const { addCv, currentUser, vacancies, sendNotification } = useContextFunc();
+  const { vacancyId } = useParams();
+
+  const findVacancy = vacancies.find((vacancy) => vacancy.id === vacancyId);
+  console.log(findVacancy);
+
   const onSubmit = async (data) => {
     if (!data) return;
     console.log(data);
 
     data.userId = currentUser?.id;
+    data.vacancyId = findVacancy.id;
 
     await addCv(data);
+    await sendNotification(data);
     reset();
   };
 
