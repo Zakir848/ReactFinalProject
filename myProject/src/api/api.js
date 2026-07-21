@@ -20,6 +20,26 @@ export const addUserToServer = async (data) => {
   return response.data;
 };
 
+export const changePasswordFromServer = async (userId, newPassword) => {
+  const response = await jobTrack.patch(`/users/${userId}`, {
+    password: newPassword,
+  });
+  console.log(response.data);
+
+  return response.data;
+};
+
+export const deleteUserInServer = async (id) => {
+  const response = await jobTrack.delete(`/users/${id}`);
+  return response.data;
+};
+//AAAA
+
+export const addCvToServer = async (data) => {
+  const response = await jobTrack.post(`/cv/`,data);
+  return response.data;
+};
+
 //Vacancies
 export const getAllVacancies = async () => {
   const response = await jobTrack.get(`/vacancies`);

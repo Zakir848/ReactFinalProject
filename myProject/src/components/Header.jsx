@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   AppBar,
@@ -15,6 +15,9 @@ import {
   Stack,
   Switch,
   Badge,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Search from "@mui/icons-material/Search";
@@ -25,45 +28,65 @@ import { useColorMode } from "../theme";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import VerifiedSymbol from "./VerifiedSymbol";
+import { flex } from "@mui/system";
 
 export default function Header() {
-  const { users, currentUser, logOut, isTurnOff } = useContextFunc();
+  const { users, currentUser, logOut, isTurnOff, vacancies } = useContextFunc();
   const [searchParams, setSearchParams] = useSearchParams("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchAnchorEl, setSearchAnchorEl] = useState(null);
+  const [type, setType] = useState("Username");
+  const [showInput, setShowInput] = useState(false);
   const { mode, toggleMode } = useColorMode();
+  const inputRef = useRef(null);
   const navigate = useNavigate();
-
-  const menuOpen = Boolean(anchorEl);
-  const search = searchParams.get("username") || "";
-  const searchMenuOpen = Boolean(searchAnchorEl) && search;
-
-  const filterUsers = useMemo(() => {
-    if (!search) return [];
-    return users.filter((user) =>
-      user?.username?.toLowerCase().startsWith(search.toLowerCase()),
-    );
-  }, [users, search]);
 
   const displayName =
     currentUser?.name || currentUser?.companyName || "İstifadəçi";
   const initials = displayName.trim().charAt(0).toUpperCase() || "?";
 
-  const handleLogout = () => {
-    setAnchorEl(null);
-    logOut();
-    navigate("/");
-  };
+  const menuOpen = Boolean(anchorEl);
+  const searchUsers = searchParams.get("username") || "";
+  const searchCompanyName = searchParams.get("companyname") || "";
+  const searchByTask = searchParams.get("searchbytask") || "";
+  const searchMenuOpen =
+    Boolean(searchAnchorEl) &&
+    Boolean(searchUsers || searchCompanyName || searchByTask);
+
+  const filterUsers = useMemo(() => {
+    if (type === "SearchTask") return [];
+    if (!searchUsers && !searchCompanyName) return [];
+
+    return users.filter((user) =>
+      type === "Username"
+        ? user?.username?.toLowerCase().startsWith(searchUsers.toLowerCase())
+        : user?.companyName
+            ?.toLowerCase()
+            .startsWith(searchCompanyName.toLowerCase()),
+    );
+  }, [users, searchUsers, searchCompanyName, type]);
+
+  const filterVacancy = useMemo(() => {
+    if (type !== "SearchTask" || !searchByTask) return [];
+
+    return vacancies.filter((vacancy) =>
+      vacancy?.work?.toLowerCase().startsWith(searchByTask.toLowerCase()),
+    );
+  }, [vacancies, searchByTask, type]);
 
   const handleSearch = (e) => {
     const value = e.target.value;
-    setSearchAnchorEl(e.currentTarget);
-    if (value) {
-      setSearchParams({
-        username: value,
-      });
-    } else {
-      setSearchParams({});
+
+    if (!searchAnchorEl) {
+      setSearchAnchorEl(inputRef.current);
+    }
+
+    if (type === "Username") {
+      setSearchParams(value ? { username: value } : {});
+    } else if (type === "CompanyName") {
+      setSearchParams(value ? { companyname: value } : {});
+    } else if (type === "SearchTask") {
+      setSearchParams(value ? { searchbytask: value } : {});
     }
   };
 
@@ -71,6 +94,12 @@ export default function Header() {
     navigate(`/profile/${id}`);
     setSearchParams({});
     setSearchAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    setAnchorEl(null);
+    logOut();
+    navigate("/");
   };
 
   return (
@@ -114,7 +143,11 @@ export default function Header() {
             variant="h6"
             fontWeight={800}
             letterSpacing="-0.5px"
-            sx={{ textDecoration: "none", color: "text.primary" }}
+            sx={{
+              textDecoration: "none",
+              color: "text.primary",
+              fontSize: { xs: "10px", lg: "20px" },
+            }}
           >
             JobTrack
           </Typography>
@@ -129,30 +162,89 @@ export default function Header() {
             textDecoration: "none",
             color: "text.primary",
             flexGrow: 1,
+            fontSize: { xs: "5px" },
           }}
         >
+          <FormControl
+            sx={{
+              maxWidth: { xs: 100, sm: 150 },
+            }}
+          >
+            <InputLabel>Filter By</InputLabel>
+            <Select
+              value={type}
+              label="Filter By"
+              onChange={(e) => setType(e.target.value)}
+              sx={{
+                maxHeight: { xs: "30px", md: "40px" },
+                maxWidth: { xs: "100px", sm: "100%" },
+              }}
+            >
+              <MenuItem value="Username">Username</MenuItem>
+              <MenuItem value="CompanyName">Company name</MenuItem>
+              <MenuItem value="SearchTask">Search Task</MenuItem>
+            </Select>
+          </FormControl>
           <Input
             id="search"
             placeholder="Seacrh user"
-            value={search}
+            inputRef={inputRef}
             onChange={handleSearch}
             sx={{
+              display: { xs: showInput ? "flex" : "none", sm: "flex" },
               padding: "0 4px",
             }}
           />
-          <Search />
+
+          <IconButton
+            onClick={() => {
+              (setShowInput(!showInput), inputRef.current.focus());
+            }}
+          >
+            <Search />
+          </IconButton>
 
           <Menu
             id="search-Menu"
-            anchorEl={searchAnchorEl}
             open={searchMenuOpen}
+            anchorEl={searchAnchorEl}
+            autoFocus={false}
+            MenuListProps={{
+              autoFocusItem: false,
+            }}
             onClose={() => setSearchAnchorEl(null)}
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-            sx={{ maxHeight: "400px", height: "100%" }}
+            sx={{ maxHeight: "400px", height: "50%" }}
+            disableAutoFocus
+            disableEnforceFocus
+            disableRestoreFocus
           >
-            {filterUsers.length > 0 ? (
+            {type === "SearchTask" ? (
+              filterVacancy.length > 0 ? (
+                filterVacancy.map((vacancy) => (
+                  <MenuItem
+                    key={vacancy.id}
+                    onClick={() => navigate(`/vacancy/${vacancy.id}`)}
+                    sx={{ display: "block", placeItems: "end" }}
+                  >
+                    <Stack>{vacancy.work}</Stack>
+                    <Stack
+                      sx={{ placeItems: "center", placeContent: "center" }}
+                    >
+                      <span>
+                        {vacancy.employer} <VerifiedSymbol />
+                      </span>
+                    </Stack>
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Not Found Vacancy</MenuItem>
+              )
+            ) : filterUsers.length > 0 ? (
               filterUsers.map((user) => {
+                console.log(user);
+
                 const isWorker = user.role === "Worker";
                 return (
                   <MenuItem
@@ -161,9 +253,8 @@ export default function Header() {
                     sx={{
                       display: "flex",
                       gap: 2,
-                      mt: 2,
+                      mt: 1,
                       width: "100%",
-                      borderRadius: "0",
                       placeContent: "space-between",
                       borderRadius: "10px",
                       "&:hover": { bgcolor: "background.default" },
@@ -171,23 +262,18 @@ export default function Header() {
                   >
                     <Stack>
                       <Avatar sx={{ bgcolor: "primary.main" }}>
-                        {isWorker ? user?.name[0] : user?.companyName[0]}
+                        {isWorker ? user?.name?.[0] : user?.companyName?.[0]}
                       </Avatar>
                     </Stack>
                     <Stack sx={{ placeItems: "end", color: "text.primary" }}>
                       <span>
                         {isWorker
                           ? `${user.name} ${user.surname}`
-                          : user.companyName}
+                          : user.companyName}{" "}
+                        <VerifiedSymbol />
                       </span>
                       <span>
-                        {isWorker ? (
-                          <>@{user?.username}</>
-                        ) : (
-                          <>
-                            @{user?.username} <VerifiedSymbol />
-                          </>
-                        )}
+                        <>@{user?.username}</>
                       </span>
                     </Stack>
                   </MenuItem>
@@ -245,6 +331,25 @@ export default function Header() {
 
               <Divider sx={{ display: { xs: "block", sm: "none" } }} />
 
+              <Stack
+                direction="row"
+                sx={{
+                  display: { xs: "flex", sm: "none" },
+                  width: "100%",
+                  margin: "5px 0",
+                  alignItems: "center",
+                }}
+              >
+                <Switch checked={mode === "dark"} onChange={toggleMode} />
+                {mode === "dark" ? (
+                  <DarkModeRoundedIcon color="primary" />
+                ) : (
+                  <LightModeRoundedIcon color="primary" />
+                )}
+              </Stack>
+
+              <Divider sx={{ display: { xs: "block", sm: "none" } }} />
+
               <MenuItem onClick={handleLogout} sx={{ color: "error.main" }}>
                 <ListItemIcon>
                   <LogoutIcon fontSize="small" color="error" />
@@ -269,7 +374,14 @@ export default function Header() {
             <Notification />
           </Badge>
         </IconButton>
-        <Stack direction="row" sx={{ alignItems: "center", ml: 1 }}>
+        <Stack
+          direction="row"
+          sx={{
+            display: { xs: "none", md: "flex" },
+            alignItems: "center",
+            ml: 1,
+          }}
+        >
           <Switch checked={mode === "dark"} onChange={toggleMode} />
           {mode === "dark" ? (
             <DarkModeRoundedIcon color="primary" />

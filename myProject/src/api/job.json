@@ -1,28 +1,16 @@
 {
   "users": [
     {
-      "id": "2",
-      "name": "Zakir",
-      "surname": "Abilov",
-      "username": "zakir001",
-      "password": "zakir123",
-      "email": "zakir@gmail.com",
-      "age": "21",
-      "gender": "Male",
-      "role": "Worker",
-      "birthday": "2005-08-07"
-    },
-    {
       "id": "3",
       "name": "Sebine",
-      "surname": "Samdybayev",
+      "surname": "Memmedova",
       "username": "sabina001",
       "password": "sabine123",
       "email": "sabina@gmail.com",
       "age": "18",
       "gender": "Female",
       "role": "Worker",
-      "birthday": "2008-11-18"
+      "birthday": "2008-01-21"
     },
     {
       "name": "Ibrahim",
@@ -78,7 +66,7 @@
     },
     {
       "email": "socar@gmail.com",
-      "password": "Socar12345@",
+      "password": "Socar12367@",
       "username": "SOCAR_Official",
       "companyName": "SOCAR",
       "voen": "10018899",
@@ -192,20 +180,55 @@
   ],
   "cv": [
     {
-      "id": "4AgvFUXnA0M"
-    }
-  ],
-  "favorite": [
-    {
-      "userId": "ScrofcOurzEF",
-      "vacancyId": "1",
-      "id": "R3IU2hRlXds"
+      "name": "Zakir",
+      "surname": "Abilov",
+      "phone": "0554383377",
+      "email": "zakirabilov023@gmail.com",
+      "address": "Cəfər Xəndan 174A",
+      "education": "Baki dovlet universiteti",
+      "description": "",
+      "userId": "4HqmkrS0hMo",
+      "id": "S3GeV9DECP8"
     },
     {
-      "userId": "ScrofcOurzEF",
-      "vacancyId": "2",
-      "id": "A8w-WSqyWFg"
+      "name": "Zakir",
+      "surname": "Abilov",
+      "phone": "0554383377",
+      "email": "zakirabilov023@gmail.com",
+      "address": "Cəfər Xəndan 174A",
+      "education": "Baki dovlet universiteti",
+      "description": "",
+      "userId": "4HqmkrS0hMo",
+      "id": "yXrHVTkU714"
+    },
+    {
+      "name": "Zakir",
+      "surname": "Abilov",
+      "phone": "0554383377",
+      "email": "zakirabilov023@gmail.com",
+      "address": "Cəfər Xəndan 174A",
+      "education": "hadrhsderthsdhrgsd",
+      "description": "",
+      "userId": "4HqmkrS0hMo",
+      "id": "N_6aVcfFx2s"
+    },
+    {
+      "name": "Zakir",
+      "surname": "Abilov",
+      "phone": "0554383377",
+      "email": "zakirabilov023@gmail.com",
+      "address": "Cəfər Xəndan 174A",
+      "education": "Baki dovlet universiteti",
+      "description": "",
+      "languages": [
+        "Russian",
+        "English",
+        "Azerbaijan"
+      ],
+      "userId": "4HqmkrS0hMo",
+      "id": "jSROHuWUICM"
     }
   ],
+  "favorite": [],
   "$schema": "./node_modules/json-server/schema.json"
 }

@@ -80,7 +80,6 @@ export default function AddVacancy() {
             gap: 3,
           }}
         >
-          {/* Basic info */}
           <Box>
             <Typography
               variant="overline"

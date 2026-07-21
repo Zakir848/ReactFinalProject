@@ -1,11 +1,22 @@
-import React, { useEffect } from "react";
-import { Box, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import { useContextFunc } from "../context/JobContext";
 import VacancyList from "./Vacancies/VacancyList";
-import Footer from "../components/Footer";
 
 export default function Home() {
   const { vacancies } = useContextFunc();
+  const [type, setType] = useState("All");
+
+  const filteredVacancies = vacancies?.filter((vacancy) =>
+    type !== "All" ? vacancy?.type === type : vacancies,
+  );
 
   return (
     <>
@@ -53,11 +64,27 @@ export default function Home() {
               borderColor: "primary.main",
               pl: 1.5,
               mb: 1,
+              display: "flex",
+              justifyContent: "space-between",
             }}
           >
             Latest vacancies
+            <FormControl sx={{ minWidth: 100 }}>
+              <InputLabel>Vacancy Type</InputLabel>
+              <Select
+                value={type}
+                label="Vacancy Type"
+                onChange={(e) => setType(e.target.value)}
+              >
+                <MenuItem value="All">All</MenuItem>
+                <MenuItem value="Full-time">Full-Time</MenuItem>
+                <MenuItem value="Remote">Remote</MenuItem>
+                <MenuItem value="Office">Office</MenuItem>
+                <MenuItem value="Hybrid">Hybrid</MenuItem>
+              </Select>
+            </FormControl>
           </Typography>
-          <VacancyList vacancies={vacancies} />
+          <VacancyList vacancies={filteredVacancies} />
         </Box>
       </Box>
     </>

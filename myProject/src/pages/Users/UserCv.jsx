@@ -2,6 +2,7 @@ import { CheckBox } from "@mui/icons-material";
 import {
   Box,
   Button,
+  Checkbox,
   FormControlLabel,
   FormGroup,
   FormHelperText,
@@ -9,9 +10,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
 import { useForm } from "react-hook-form";
-import Footer from "../../components/Footer";
+import { useContextFunc } from "../../context/JobContext";
 
 export default function UserCv() {
   const {
@@ -21,9 +21,16 @@ export default function UserCv() {
     formState: { errors },
   } = useForm();
 
-  const LANGUAGES = ["Russian", "English", "Azerbaijani"];
+  const LANGUAGES = ["Russian", "English", "Azerbaijan"];
 
-  const onSubmit = (data) => {
+  const { addCv, currentUser } = useContextFunc();
+  const onSubmit = async (data) => {
+    if (!data) return;
+    console.log(data);
+
+    data.userId = currentUser?.id;
+
+    await addCv(data);
     reset();
   };
 
@@ -133,11 +140,18 @@ export default function UserCv() {
           <Typography variant="subtitle2" mb={0.5}>
             Languages
           </Typography>
-          <FormGroup col sx={{ ml: 1 }}>
+          <FormGroup>
             {LANGUAGES.map((lang) => (
               <FormControlLabel
                 key={lang}
-                control={<CheckBox value={lang} {...register("languages")} />}
+                control={
+                  <Checkbox
+                    value={lang}
+                    {...register("languages", {
+                      required: "Select at least one language",
+                    })}
+                  />
+                }
                 label={lang}
               />
             ))}

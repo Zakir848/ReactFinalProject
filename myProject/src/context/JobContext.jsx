@@ -9,6 +9,9 @@ import {
   addFavoriteToServer,
   getAllFavorites,
   deleteInServer,
+  changePasswordFromServer,
+  deleteUserInServer,
+  addCvToServer,
 } from "../api/api";
 
 const JobContextCreate = createContext();
@@ -71,9 +74,28 @@ export default function JobContext({ children }) {
     }
   };
 
+  const deleteUser = async () => {
+    if (!currentUser) return;
+    try {
+      await deleteUserInServer(currentUser?.id);
+    } catch (error) {
+      console.log("Can not delete user: ", error);
+    }
+  };
+
   const addVacancies = async (data) => {
     try {
       await addVacanciesToServer(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addCv = async (data) => {
+    if (!currentUser) return;
+
+    try {
+      await addCvToServer(data);
     } catch (error) {
       console.log(error);
     }
@@ -117,6 +139,23 @@ export default function JobContext({ children }) {
     }
   };
 
+  const changePassword = async (newPassword) => {
+    if (!currentUser) return;
+
+    try {
+      console.log(currentUser?.id, newPassword);
+
+      const update = await changePasswordFromServer(
+        currentUser?.id,
+        newPassword,
+      );
+      console.log(update);
+      setCurrentUser(update);
+    } catch (error) {
+      console.log("Failed to change password:", error);
+    }
+  };
+
   const login = (userData) => {
     try {
       setLoading(true);
@@ -147,6 +186,9 @@ export default function JobContext({ children }) {
         setIsTurnOff,
         setLoading,
         addUser,
+        addCv,
+        deleteUser,
+        changePassword,
         login,
         logOut,
         searchUser,

@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
@@ -8,21 +8,31 @@ import { useContextFunc } from "../context/JobContext";
 
 export default function Footer() {
   const { currentUser } = useContextFunc();
+  const navigate = useNavigate();
 
   const navItems = [
-    { label: "Home", to: "/", icon: HomeRoundedIcon, end: true },
-    currentUser?.role === "Employer"
-      ? { label: "Add Vacancy", to: "/addVacancy", icon: AddBox }
-      : { label: "Add CV", to: "/addVacancy", icon: AddBox },
+    {
+      label: "Home",
+      to: "/",
+      icon: HomeRoundedIcon,
+    },
+    {
+      label: currentUser?.role === "Employer" ? "Add Vacancy" : "Add CV",
+      to: "/addVacancy",
+      icon: AddBox,
+      requiresAuth: true,
+    },
     {
       label: "My Favorite",
-      to: currentUser ? `/profile/myFavorite` : `/signin`,
+      to: "/profile/myFavorite",
       icon: FavoriteRoundedIcon,
+      requiresAuth: true,
     },
     {
       label: "Profile",
-      to: currentUser ? `/profile/${currentUser.id}` : `/signin`,
+      to: currentUser ? `/profile/${currentUser.id}` : "/profile",
       icon: PersonRoundedIcon,
+      requiresAuth: true,
     },
   ];
 
@@ -43,12 +53,18 @@ export default function Footer() {
         py: 1.2,
       }}
     >
-      {navItems.map(({ label, to, icon: Icon, end }) => (
+      {navItems.map(({ label, to, icon: Icon, requiresAuth }) => (
         <Box
           key={label}
           component={NavLink}
           to={to}
-          end={end}
+          end={to === "/"}
+          onClick={(e) => {
+            if (requiresAuth && !currentUser) {
+              e.preventDefault();
+              navigate("/signin");
+            }
+          }}
           sx={{ textDecoration: "none" }}
         >
           {({ isActive }) => (
@@ -59,8 +75,10 @@ export default function Footer() {
                 alignItems: "center",
                 gap: 0.3,
                 color: isActive ? "primary.main" : "text.secondary",
-                transition: "color 0.15s ease",
-                "&:hover": { color: "primary.main" },
+                transition: "0.2s",
+                "&:hover": {
+                  color: "primary.main",
+                },
               }}
             >
               <Icon sx={{ fontSize: 24 }} />
