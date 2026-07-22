@@ -6,11 +6,13 @@ import {
   FormControlLabel,
   FormGroup,
   FormHelperText,
+  MenuItem,
   Paper,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useContextFunc } from "../../context/JobContext";
 import { useParams } from "react-router-dom";
 
@@ -18,7 +20,9 @@ export default function UserCv() {
   const {
     register,
     reset,
+    control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
 
@@ -36,11 +40,23 @@ export default function UserCv() {
 
     data.userId = currentUser?.id;
     data.vacancyId = findVacancy.id;
+    data.status = "Pending";
 
     await addCv(data);
     await sendNotification(data);
     reset();
   };
+
+  const today = new Date();
+  const startYear = today.getFullYear() - 60;
+  const currentYear = today.getFullYear();
+
+  const years = Array.from(
+    {
+      length: currentYear - startYear + 1,
+    },
+    (_, index) => currentYear - index,
+  );
 
   return (
     <Box sx={{ maxWidth: 600, mx: "auto", px: { xs: 2, sm: 3 }, py: 5 }}>
@@ -141,9 +157,67 @@ export default function UserCv() {
           rows={6}
           error={!!errors.description}
           helperText={errors.description?.message}
-          {...register("description", {})}
+          {...register("description", {
+            required: "Description is required",
+          })}
         />
 
+        <Box sx={{ display: "flex", gap: 1 }}>
+          <Controller
+            name="startYear"
+            control={control}
+            rules={{ required: "Please select a year" }}
+            defaultValue=""
+            render={({ field }) => (
+              <TextField
+                {...field}
+                select
+                label="Education Start Year"
+                fullWidth
+                error={!!errors.startYear}
+                helperText={errors.startYear?.message}
+              >
+                {years.map((year) => (
+                  <MenuItem key={year} value={year}>
+                    {year}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+          />
+          <Controller
+            name="endYear"
+            control={control}
+            rules={{
+              required: "Please select a year",
+              validate: (value) => {
+                const start = watch("startYear");
+                if (!start) return true;
+                return (
+                  Number(value) > Number(start) ||
+                  "End year must be after start year"
+                );
+              },
+            }}
+            defaultValue=""
+            render={({ field }) => (
+              <TextField
+                {...field}
+                select
+                label="Education End Year"
+                fullWidth
+                error={!!errors.endYear}
+                helperText={errors.endYear?.message}
+              >
+                {years.map((year) => (
+                  <MenuItem key={year} value={year}>
+                    {year}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+          />
+        </Box>
         <Box>
           <Typography variant="subtitle2" mb={0.5}>
             Languages

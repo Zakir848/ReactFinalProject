@@ -110,9 +110,12 @@ export default function JobContext({ children }) {
     }
   };
 
-  const changeNotificationFromStatus = async (id) => {
+  const changeNotificationFromStatus = async (id, status) => {
     try {
-      await changeNotificationStatus(id);
+      await changeNotificationStatus(id, status);
+      setNotifications((prev) =>
+        prev.map((notif) => (notif.id === id ? { ...notif, status } : notif)),
+      );
     } catch (error) {
       console.log(error);
     }

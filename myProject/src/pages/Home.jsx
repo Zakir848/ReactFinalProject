@@ -11,8 +11,16 @@ import { useContextFunc } from "../context/JobContext";
 import VacancyList from "./Vacancies/VacancyList";
 
 export default function Home() {
-  const { vacancies } = useContextFunc();
+  const { vacancies, setIsTurnOff } = useContextFunc();
   const [type, setType] = useState("All");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("notification");
+
+    if (saved !== null) {
+      setIsTurnOff(JSON.parse(saved));
+    }
+  }, []);
 
   const filteredVacancies = vacancies?.filter((vacancy) =>
     type !== "All" ? vacancy?.type === type : vacancies,

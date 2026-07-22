@@ -197,7 +197,7 @@ export default function VacancyDetail() {
             </Typography>
           </Box>
 
-          {currentUser.role === "Worker" && (
+          {currentUser?.role === "Worker" && (
             <Button
               variant="contained"
               fullWidth

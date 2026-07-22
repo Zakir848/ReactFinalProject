@@ -7,8 +7,7 @@ import AddBox from "@mui/icons-material/AddBox";
 import { useContextFunc } from "../context/JobContext";
 
 export default function Footer() {
-  const { currentUser, vacancies } = useContextFunc();
-  const { vacancyId } = useParams();
+  const { currentUser } = useContextFunc();
   const navigate = useNavigate();
 
   const navItems = [
@@ -17,9 +16,9 @@ export default function Footer() {
       to: "/",
       icon: HomeRoundedIcon,
     },
-    {
-      label: currentUser?.role === "Employer" ? "Add Vacancy" : "Add CV",
-      to: currentUser?.role === "Employer" ? "/addVacancy" : "/profile/cv/",
+    currentUser?.role === "Employer" && {
+      label: "Add Vacancy",
+      to: "/addVacancy",
       icon: AddBox,
       requiresAuth: true,
     },
@@ -35,7 +34,7 @@ export default function Footer() {
       icon: PersonRoundedIcon,
       requiresAuth: true,
     },
-  ];
+  ].filter(Boolean);
 
   return (
     <Box

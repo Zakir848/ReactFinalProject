@@ -79,9 +79,9 @@ export const searchVacancy = async () => {
 
 //Notification
 
-export const changeNotificationStatus = async (id) => {
+export const changeNotificationStatus = async (id, status) => {
   const response = await jobTrack.patch(`/notifications/${id}`, {
-    unread: true,
+    status: status,
   });
   return response.data;
 };

@@ -1,16 +1,24 @@
-import React, { useEffect, useState } from "react";
-import "../styles/Auth.css";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-// import Alert from "@mui/material/Alert";
-// import AlertTitle from "@mui/material/AlertTitle";
-// import Stack from "@mui/material/Stack";
-import { useContextFunc } from "../context/JobContext";
 import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  MenuItem,
+  ToggleButtonGroup,
+  ToggleButton,
+  Alert,
+} from "@mui/material";
+import { useContextFunc } from "../context/JobContext";
+import PasswordField from "../components/PasswordField";
 
 export default function SignUp() {
   const { addUser, users } = useContextFunc();
   const [isCompany, setIsCompany] = useState(false);
-  const [has, setHas] = useState(false);
+  const [emailExists, setEmailExists] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -23,9 +31,10 @@ export default function SignUp() {
   } = useForm();
 
   const currentDate = new Date().toISOString().split("T")[0];
-
   const today = new Date();
-  const startBirthday = new Date(
+
+  // Ən yeni icazə verilən doğum günü (18 yaş) və ən köhnə (64 yaş)
+  const youngestAllowed = new Date(
     today.getFullYear() - 18,
     today.getMonth(),
     today.getDate(),
@@ -33,7 +42,7 @@ export default function SignUp() {
     .toISOString()
     .split("T")[0];
 
-  const endBirdhday = new Date(
+  const oldestAllowed = new Date(
     today.getFullYear() - 64,
     today.getMonth(),
     today.getDate(),
@@ -41,348 +50,294 @@ export default function SignUp() {
     .toISOString()
     .split("T")[0];
 
+  const handleRoleChange = (e, newRole) => {
+    if (!newRole) return;
+    setIsCompany(newRole === "Employer");
+    unregister(["email", "password", "repeadPassword", "name", "surname"]);
+  };
+
   const onSubmit = (data) => {
-    data.role = isCompany ? "Employer" : "Worker";
+    const role = isCompany ? "Employer" : "Worker";
+    data.role = role;
 
     const existingUser = users.find(
-      (user) =>
-        (user.email === data.email && user.role === data.role) ||
-        (user.email === data.email &&
-          user.role === data.role &&
-          user.voen === data.voen),
+      (user) => user.email === data.email && user.role === role,
     );
 
     if (existingUser) {
-      setHas(true);
+      setEmailExists(true);
       return;
     }
-
-    setHas(false);
-
-    data.age = today.getFullYear() - data.birthday.slice(0, 4);
+    setEmailExists(false);
 
     delete data.repeadPassword;
 
-    if (data.role === "Employer") {
-      (delete data.name,
-        delete data.surname,
-        delete data.username,
-        delete data.age,
-        delete data.gender,
-        delete data.birthday);
+    if (role === "Employer") {
+      delete data.name;
+      delete data.surname;
+      delete data.username;
+      delete data.gender;
+      delete data.birthday;
+    } else {
+      data.age = today.getFullYear() - Number(data.birthday.slice(0, 4));
     }
 
     addUser(data);
     reset();
-
     navigate("/");
   };
 
-  const handleChangeStatus = (e) => {
-    const select = e.target.value;
-    setIsCompany(select === "Employer");
-    unregister(["email", "password", "repeadPassword", "name", "surname"]);
-  };
-
   return (
-    <section className="container">
-      <div className="caseAuth">
-        <h1>Sign Up</h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="form-authen">
-          <div className="authen-inputs">
-            <select onChange={handleChangeStatus}>
-              <option value="Worker">Worker</option>
-              <option value="Employer">Employer</option>
-            </select>
+    <Box sx={{ maxWidth: 560, mx: "auto", px: { xs: 2, sm: 3 }, py: 5 }}>
+      <Typography
+        variant="h5"
+        fontWeight={800}
+        sx={{ mb: 3, textAlign: "center" }}
+      >
+        Sign Up
+      </Typography>
 
-            {isCompany ? (
-              <>
-                <React.Fragment key="employer">
-                  <input
-                    name="email"
-                    type="email"
-                    placeholder="Enter email"
-                    {...register("email", {
-                      required: "Please, enter your email",
-                      minLength: {
-                        value: 2,
-                        message: "Please, enter minimum 2 charakter",
-                      },
-                      pattern: {
-                        value: /^[a-zA-Z0-9._%+-]+@(gmail\.com|mail\.ru)$/,
-                        message: "Plase, set @gmail or @mail.ru ",
-                      },
-                    })}
-                  />
-                  {errors.email && (
-                    <p className="error">{errors.email.message}</p>
-                  )}
-                  {has && (
-                    <p className="error">
-                      This email address is already in use. Please try a
-                      different one.
-                    </p>
-                  )}
+      <Paper
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{
+          p: { xs: 2.5, sm: 4 },
+          display: "flex",
+          flexDirection: "column",
+          gap: 2.5,
+        }}
+      >
+        <ToggleButtonGroup
+          value={isCompany ? "Employer" : "Worker"}
+          exclusive
+          onChange={handleRoleChange}
+          fullWidth
+        >
+          <ToggleButton value="Worker">Worker</ToggleButton>
+          <ToggleButton value="Employer">Employer</ToggleButton>
+        </ToggleButtonGroup>
 
-                  <input
-                    name="password"
-                    placeholder="Enter password"
-                    type="password"
-                    {...register("password", {
-                      required: "Please, enter your password",
-                      minLength: {
-                        value: 8,
-                        message: "Please, enter minimum 8 charakter",
-                      },
-                      maxLength: {
-                        value: 20,
-                        message: "Please, enter maximum 20 charakter",
-                      },
-                      pattern: {
-                        value:
-                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
-                        message:
-                          "Minimum 1 upper letter, 1 little letter, 1 Symbol, 1 digit",
-                      },
-                    })}
-                  />
-                  {errors.password && (
-                    <p className="error">{errors.password.message}</p>
-                  )}
+        {emailExists && (
+          <Alert severity="error">
+            This email address is already in use. Please try a different one.
+          </Alert>
+        )}
 
-                  <input
-                    name="repeadPassword"
-                    type="password"
-                    placeholder="Password"
-                    {...register("repeadPassword", {
-                      required: "Please, enter your password",
-                      minLength: {
-                        value: 8,
-                        message: "Please, enter minimum 8 charakter",
-                      },
-                      maxLength: {
-                        value: 16,
-                        message: "Please, enter maximum 20 charakter",
-                      },
-                    })}
-                  />
-                  {errors.repeadPassword && (
-                    <p className="error">{errors.repeadPassword.message}</p>
-                  )}
+        {isCompany ? (
+          <>
+            <TextField
+              label="Email"
+              type="email"
+              fullWidth
+              error={!!errors.email}
+              helperText={errors.email?.message}
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^\S+@\S+\.\S+$/,
+                  message: "Invalid email format",
+                },
+              })}
+            />
 
-                  <input
-                    name="company"
-                    placeholder="Company Name"
-                    {...register("companyName", {
-                      required: "Please enter company name",
-                    })}
-                  />
-                  {errors.companyName && (
-                    <p className="error">{errors.companyName.message}</p>
-                  )}
+            <PasswordField
+              label="Password"
+              error={!!errors.password}
+              helperText={errors.password?.message}
+              {...register("password", {
+                required: "Password is required",
+                pattern: {
+                  value:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
+                  message:
+                    "Minimum 1 uppercase, 1 lowercase, 1 symbol, 1 digit, 8+ chars",
+                },
+              })}
+            />
 
-                  <input
-                    name="voen"
-                    placeholder="Company Tax ID / VÖEN"
-                    {...register("voen", { required: "Please enter VÖEN" })}
-                  />
-                  {errors.voen && (
-                    <p className="error">{errors.voen.message}</p>
-                  )}
+            <PasswordField
+              label="Repeat password"
+              error={!!errors.repeadPassword}
+              helperText={errors.repeadPassword?.message}
+              {...register("repeadPassword", {
+                required: "Please repeat your password",
+                validate: (value) =>
+                  value === watch("password") || "Passwords do not match",
+              })}
+            />
 
-                  <input
-                    name="foundingDate"
-                    type="date"
-                    {...register("foundingDate", {
-                      required: "Please, select your company founding day",
-                    })}
-                    max={currentDate}
-                  />
-                  {errors.foundingDate ? (
-                    <p className="error">{errors.foundingDate.message}</p>
-                  ) : (
-                    <label style={{ color: "gray" }}>
-                      Enter the company's founding date.
-                    </label>
-                  )}
-                </React.Fragment>
-              </>
-            ) : (
-              <>
-                <React.Fragment key="worker">
-                  <input
-                    name="name"
-                    placeholder="Enter name"
-                    {...register("name", {
-                      required: "Please, enter name",
-                      minLength: {
-                        value: 2,
-                        message: "Minimum 2 character",
-                      },
-                      pattern: {
-                        value: /^[a-zA-ZçÇğĞıİöÖşŞüÜəƏ]+$/,
-                        message: "Only letters",
-                      },
-                    })}
-                  />
-                  {errors.name && (
-                    <p className="error">{errors.name.message}</p>
-                  )}
+            <TextField
+              label="Company name"
+              fullWidth
+              error={!!errors.companyName}
+              helperText={errors.companyName?.message}
+              {...register("companyName", {
+                required: "Company name is required",
+              })}
+            />
 
-                  <input
-                    name="surname"
-                    placeholder="Enter surname"
-                    {...register("surname", {
-                      required: "Please, enter surname",
-                      minLength: {
-                        value: 3,
-                        message: "Minimum 3 characker",
-                      },
-                      pattern: {
-                        value: /^[a-zA-ZçÇğĞıİöÖşŞüÜəƏ]+$/,
-                        message: "Only letters",
-                      },
-                    })}
-                  />
-                  {errors.surname && (
-                    <p className="error">{errors.surname.message}</p>
-                  )}
+            <TextField
+              label="Company Tax ID / VÖEN"
+              fullWidth
+              error={!!errors.voen}
+              helperText={errors.voen?.message}
+              {...register("voen", { required: "VÖEN is required" })}
+            />
 
-                  <input
-                    name="username"
-                    placeholder="Enter username"
-                    {...register("username", {
-                      required: "Please, enter your username",
-                      pattern: {
-                        value: /^[a-zA-Z][a-zA-Z0-9_]{3,20}$/,
-                        message:
-                          "Username must start with a letter and contain only letters, numbers, and underscores (3-20 characters).",
-                      },
-                    })}
-                  />
-                  {errors.username && (
-                    <p className="error">{errors.username.message}</p>
-                  )}
-                  {has && (
-                    <p className="error">
-                      This email address is already in use. Please try a
-                      different one.
-                    </p>
-                  )}
+            <TextField
+              type="date"
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              error={!!errors.foundingDate}
+              helperText={
+                errors.foundingDate?.message ||
+                "Enter the company's founding date"
+              }
+              inputProps={{ max: currentDate }}
+              {...register("foundingDate", {
+                required: "Founding date is required",
+              })}
+            />
+          </>
+        ) : (
+          <>
+            <Box
+              sx={{
+                display: "flex",
+                gap: 2,
+                flexDirection: { xs: "column", sm: "row" },
+              }}
+            >
+              <TextField
+                label="Name"
+                fullWidth
+                error={!!errors.name}
+                helperText={errors.name?.message}
+                {...register("name", {
+                  required: "Name is required",
+                  minLength: { value: 2, message: "Minimum 2 characters" },
+                  pattern: {
+                    value: /^[a-zA-ZçÇğĞıİöÖşŞüÜəƏ]+$/,
+                    message: "Only letters",
+                  },
+                })}
+              />
+              <TextField
+                label="Surname"
+                fullWidth
+                error={!!errors.surname}
+                helperText={errors.surname?.message}
+                {...register("surname", {
+                  required: "Surname is required",
+                  minLength: { value: 3, message: "Minimum 3 characters" },
+                  pattern: {
+                    value: /^[a-zA-ZçÇğĞıİöÖşŞüÜəƏ]+$/,
+                    message: "Only letters",
+                  },
+                })}
+              />
+            </Box>
 
-                  <input
-                    name="email"
-                    type="email"
-                    placeholder="Enter email"
-                    {...register("email", {
-                      required: "Please, enter your email",
-                      minLength: {
-                        value: 2,
-                        message: "Please, enter minimum 2 charakter",
-                      },
-                      pattern: {
-                        value: /^[a-zA-Z0-9._%+-]+@(gmail\.com|mail\.ru)$/,
-                        message: "Plase, set @gmail or @mail.ru ",
-                      },
-                    })}
-                  />
-                  {errors.email && (
-                    <p className="error">{errors.email.message}</p>
-                  )}
-                  {has && (
-                    <p className="error">
-                      This email address is already in use. Please try a
-                      different one.
-                    </p>
-                  )}
+            <TextField
+              label="Username"
+              fullWidth
+              error={!!errors.username}
+              helperText={errors.username?.message}
+              {...register("username", {
+                required: "Username is required",
+                pattern: {
+                  value: /^[a-zA-Z][a-zA-Z0-9_]{3,20}$/,
+                  message:
+                    "Must start with a letter, 4-21 chars, letters/numbers/underscore",
+                },
+              })}
+            />
 
-                  <input
-                    name="password"
-                    type="password"
-                    placeholder="Enter password"
-                    {...register("password", {
-                      required: "Please, enter your password",
-                      minLength: {
-                        value: 8,
-                        message: "Please, enter minimum 8 charakter",
-                      },
-                      maxLength: {
-                        value: 20,
-                        message: "Please, enter maximum 20 charakter",
-                      },
-                      pattern: {
-                        value:
-                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
-                        message:
-                          "Minimum 1 upper and little letter, 1 Symbol, 1 digit",
-                      },
-                    })}
-                  />
-                  {errors.password && (
-                    <p className="error">{errors.password.message}</p>
-                  )}
+            <TextField
+              label="Email"
+              type="email"
+              fullWidth
+              error={!!errors.email}
+              helperText={errors.email?.message}
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^\S+@\S+\.\S+$/,
+                  message: "Invalid email format",
+                },
+              })}
+            />
 
-                  <input
-                    name="repeadPassword"
-                    type="password"
-                    placeholder="Repead password"
-                    {...register("repeadPassword", {
-                      required: "Please, enter your password",
-                      validate: (value) => {
-                        return (
-                          value === watch("password") ||
-                          "Passwords do not match!"
-                        );
-                      },
-                    })}
-                  />
-                  {errors.repeadPassword && (
-                    <p className="error">{errors.repeadPassword.message}</p>
-                  )}
+            <PasswordField
+              label="Password"
+              error={!!errors.password}
+              helperText={errors.password?.message}
+              {...register("password", {
+                required: "Password is required",
+                pattern: {
+                  value:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
+                  message:
+                    "Minimum 1 uppercase, 1 lowercase, 1 symbol, 1 digit, 8+ chars",
+                },
+              })}
+            />
 
-                  <input
-                    name="birthday"
-                    type="date"
-                    placeholder="Enter Repead Password"
-                    {...register("birthday", {
-                      required: "Please, select your birtday",
-                      min: {
-                        value: { startBirthday },
-                        message: `Minimum 18 age`,
-                      },
-                      max: {
-                        value: { endBirdhday },
-                        message: `Minimum 64 age`,
-                      },
-                    })}
-                    min={endBirdhday}
-                    max={startBirthday}
-                  />
-                  {errors.birthday && (
-                    <p className="error">{errors.birthday.message}</p>
-                  )}
+            <PasswordField
+              label="Repeat password"
+              error={!!errors.repeadPassword}
+              helperText={errors.repeadPassword?.message}
+              {...register("repeadPassword", {
+                required: "Please repeat your password",
+                validate: (value) =>
+                  value === watch("password") || "Passwords do not match",
+              })}
+            />
 
-                  <select
-                    {...register("gender", {
-                      required: "Please, choose your gender",
-                    })}
-                  >
-                    <option value="">Other</option>
-                    <option value="Male">Male</option>
-                    <option value="Famale">Famale</option>
-                  </select>
-                  {errors.gender && (
-                    <p className="error">{errors.gender.message}</p>
-                  )}
-                </React.Fragment>
-              </>
-            )}
-            <div className="authBtn-case">
-              <button type="submit">Sign Up</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </section>
+            <TextField
+              type="date"
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              error={!!errors.birthday}
+              helperText={errors.birthday?.message}
+              inputProps={{ min: oldestAllowed, max: youngestAllowed }}
+              {...register("birthday", {
+                required: "Date of birth is required",
+                validate: (value) => {
+                  if (value > youngestAllowed)
+                    return "You must be at least 18 years old";
+                  if (value < oldestAllowed)
+                    return "You must be under 65 years old";
+                  return true;
+                },
+              })}
+            />
+
+            <TextField
+              select
+              label="Gender"
+              fullWidth
+              defaultValue=""
+              error={!!errors.gender}
+              helperText={errors.gender?.message}
+              {...register("gender", { required: "Please choose your gender" })}
+            >
+              <MenuItem value="Male">Male</MenuItem>
+              <MenuItem value="Female">Female</MenuItem>
+              <MenuItem value="Other">Other</MenuItem>
+            </TextField>
+          </>
+        )}
+
+        <Button
+          type="submit"
+          variant="contained"
+          size="large"
+          sx={{ height: 48, mt: 1 }}
+        >
+          Sign Up
+        </Button>
+      </Paper>
+    </Box>
   );
 }

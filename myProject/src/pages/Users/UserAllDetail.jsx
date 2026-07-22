@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -52,12 +52,19 @@ export default function UserAllDetail() {
     changePassword,
     deleteUser,
   } = useContextFunc();
-  const displayName = currentUser?.name || currentUser?.companyName || "";
-  const initials = displayName.trim().charAt(0).toUpperCase() || "?";
 
   const { logOut } = useContextFunc();
   const [alertDelete, setAlertDelete] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    {
+      const saved = localStorage.getItem("notification");
+      if (saved !== null) {
+        setIsTurnOff(JSON.parse(saved));
+      }
+    }
+  }, []);
 
   if (loading) {
     return (
@@ -87,6 +94,13 @@ export default function UserAllDetail() {
     console.log(data);
     await changePassword(data.newPassword);
     passwordForm.reset();
+  };
+
+  const handleSwitch = (e) => {
+    const checked = e.target.checked;
+
+    setIsTurnOff(checked);
+    localStorage.setItem("notification", JSON.stringify(checked));
   };
 
   const handleAlertCase = () => {
@@ -198,12 +212,7 @@ export default function UserAllDetail() {
 
         <SectionCard title="Notifications">
           <FormControlLabel
-            control={
-              <Switch
-                checked={isTurnOff}
-                onChange={(e) => setIsTurnOff(e.target.checked)}
-              />
-            }
+            control={<Switch checked={isTurnOff} onChange={handleSwitch} />}
             label="Notification when the application status changes"
           />
         </SectionCard>
@@ -280,99 +289,104 @@ export default function UserAllDetail() {
           </SectionCard>
         </Paper>
 
-        <Card sx={{ borderColor: "error.main" }}>
-          <CardContent sx={{ p: 3 }}>
-            <Typography variant="h6" color="error.main" mb={0.5}>
-              Delete Account
-            </Typography>
-            <Typography variant="body2" color="text.secondary" mb={2.5}>
-              This operation cannot be undone. All data will be deleted.
-            </Typography>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={handleAlertCase}
-              sx={{ mt: 2 }}
-            >
-              Delete my account
-            </Button>
-            <Backdrop
-              open={alertDelete}
-              sx={{
-                backdropFilter: "blur(8px)",
-                backgroundColor: "rgba(0,0,0,.55)",
-                zIndex: (theme) => theme.zIndex.drawer + 1,
-              }}
-            >
-              <Box
-                sx={{
-                  width: {
-                    xs: "92%",
-                    sm: 420,
-                  },
-                  bgcolor: "background.paper",
-                  borderRadius: 4,
-                  p: 4,
-                  boxShadow: 24,
-                  textAlign: "center",
-                }}
-              >
-                <Avatar
-                  sx={{
-                    bgcolor: "error.main",
-                    width: 70,
-                    height: 70,
-                    mx: "auto",
-                    mb: 2,
-                  }}
-                >
-                  <Warning sx={{ fontSize: 40 }} />
-                </Avatar>
-
-                <Typography variant="h5" fontWeight={700} gutterBottom>
-                  Delete Account?
+        {role && (
+          <>
+            <Card sx={{ borderColor: "error.main" }}>
+              <CardContent sx={{ p: 3 }}>
+                <Typography variant="h6" color="error.main" mb={0.5}>
+                  Delete Account
                 </Typography>
-
-                <Typography
-                  color="text.secondary"
-                  sx={{
-                    mb: 3,
-                    lineHeight: 1.7,
-                  }}
-                >
-                  This action is permanent and cannot be undone.
-                  <br />
-                  Your profile, vacancies, messages and all personal information
-                  will be permanently deleted.
+                <Typography variant="body2" color="text.secondary" mb={2.5}>
+                  This operation cannot be undone. All data will be deleted.
                 </Typography>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleAlertCase}
+                  sx={{ mt: 2 }}
+                >
+                  Delete my account
+                </Button>
 
-                <Box
+                <Backdrop
+                  open={alertDelete}
                   sx={{
-                    display: "flex",
-                    gap: 2,
+                    backdropFilter: "blur(8px)",
+                    backgroundColor: "rgba(0,0,0,.55)",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
                   }}
                 >
-                  <Button
-                    fullWidth
-                    variant="outlined"
-                    onClick={() => setAlertDelete(false)}
+                  <Box
+                    sx={{
+                      width: {
+                        xs: "92%",
+                        sm: 420,
+                      },
+                      bgcolor: "background.paper",
+                      borderRadius: 4,
+                      p: 4,
+                      boxShadow: 24,
+                      textAlign: "center",
+                    }}
                   >
-                    Cancel
-                  </Button>
+                    <Avatar
+                      sx={{
+                        bgcolor: "error.main",
+                        width: 70,
+                        height: 70,
+                        mx: "auto",
+                        mb: 2,
+                      }}
+                    >
+                      <Warning sx={{ fontSize: 40 }} />
+                    </Avatar>
 
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="error"
-                    onClick={handleDeleteAccount}
-                  >
-                    Delete Account
-                  </Button>
-                </Box>
-              </Box>
-            </Backdrop>
-          </CardContent>
-        </Card>
+                    <Typography variant="h5" fontWeight={700} gutterBottom>
+                      Delete Account?
+                    </Typography>
+
+                    <Typography
+                      color="text.secondary"
+                      sx={{
+                        mb: 3,
+                        lineHeight: 1.7,
+                      }}
+                    >
+                      This action is permanent and cannot be undone.
+                      <br />
+                      Your profile, vacancies, messages and all personal
+                      information will be permanently deleted.
+                    </Typography>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        gap: 2,
+                      }}
+                    >
+                      <Button
+                        fullWidth
+                        variant="outlined"
+                        onClick={() => setAlertDelete(false)}
+                      >
+                        Cancel
+                      </Button>
+
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        color="error"
+                        onClick={handleDeleteAccount}
+                      >
+                        Delete Account
+                      </Button>
+                    </Box>
+                  </Box>
+                </Backdrop>
+              </CardContent>
+            </Card>
+          </>
+        )}
       </Box>
     </>
   );

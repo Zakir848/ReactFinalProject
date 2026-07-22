@@ -67,10 +67,6 @@ export default function Header() {
     );
   }, [users, searchUsers, searchCompanyName, type]);
 
-  useEffect(()=>{
-
-  })
-
   const filterVacancy = useMemo(() => {
     if (type !== "SearchTask" || !searchByTask) return [];
 
@@ -79,15 +75,21 @@ export default function Header() {
     );
   }, [vacancies, searchByTask, type]);
 
-  const myNotifications = notifications.filter((notification) => {
-    const vacancy = vacancies.find(
-      (vacancy) =>
-        vacancy.id === notification.vacancyId &&
-        vacancy.employerId === currentUser.id,
-    );
+  const myNotifications = useMemo(() => {
+    if (!currentUser) return [];
+    const isEmployer = currentUser.role === "Employer";
 
-    return vacancy;
-  });
+    return notifications.filter((notification) => {
+      const vacancy = vacancies.find(
+        (vacancy) => vacancy.id === notification.vacancyId,
+      );
+      if (!vacancy) return;
+
+      return isEmployer
+        ? vacancy.employerId === currentUser?.id
+        : notification.userId === currentUser?.id;
+    });
+  }, [notifications, vacancies, currentUser]);
 
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -392,7 +394,12 @@ export default function Header() {
           }
         >
           <Badge
-            badgeContent={isTurnOff ? myNotifications.length : 0}
+            badgeContent={
+              isTurnOff
+                ? myNotifications.filter((item) => item.status === "Pending")
+                    .length
+                : 0
+            }
             color="error"
           >
             <Notification />

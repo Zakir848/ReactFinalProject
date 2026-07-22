@@ -169,38 +169,36 @@
   ],
   "notifications": [
     {
-      "name": "Zakir",
+      "name": "Ibrahim",
       "surname": "Abilov",
-      "phone": "0554383377",
+      "phone": "0552572952",
       "email": "zakirabilov023@gmail.com",
       "address": "Cəfər Xəndan 174A",
       "education": "Baki dovlet universiteti",
       "description": "I am a motivated and responsible Junior Front-End Developer with knowledge of HTML, CSS, JavaScript, React, Git, and REST API integration. I enjoy learning new technologies and improving my programming skills through practical projects. I am a fast learner, a good team player, and always ready to take on new challenges. My goal is to build high-quality web applications and contribute to the success of the company while continuously developing my technical and professional skills.I",
-      "languages": [
-        "Russian",
-        "English"
-      ],
-      "unread": true,
-      "userId": "VySxcOurzXY",
-      "vacancyId": "1",
-      "id": "kQx1Y3MY7CY"
-    },
-    {
-      "name": "Zakir",
-      "surname": "Abilov",
-      "phone": "0554383377",
-      "email": "zakirabilov023@gmail.com",
-      "address": "Cəfər Xəndan 174A",
-      "education": "Baki dovlet universiteti",
-      "description": "I am a motivated and responsible Junior Front-End Developer with knowledge of HTML, CSS, JavaScript, React, Git, and REST API integration. I enjoy learning new technologies and improving my programming skills through practical projects. I am a fast learner, a good team player, and always ready to take on new challenges. My goal is to build high-quality web applications and contribute to the success of the company while continuously developing my technical and professional skills.I",
-      "languages": [
-        "Russian",
-        "English"
-      ],
-      "unread": true,
-      "userId": "VySxcOurzXY",
+      "languages": ["Russian", "English"],
+      "startYear": 2006,
+      "endYear": 2010,
+      "status": "Accepted",
+      "userId": "wqBlhsxgk8w",
       "vacancyId": "1",
       "id": "sdtTWERGvSDtg"
+    },
+    {
+      "name": "Şəfaqət",
+      "surname": "Məmmədova",
+      "phone": "0554383377",
+      "email": "zakirabilov023@gmail.com",
+      "address": "İzlivnoy 1",
+      "education": "Baki dovlet universiteti",
+      "description": "asdgasdhgasdhg",
+      "languages": ["Russian", "English", "Azerbaijan"],
+      "startYear": 2006,
+      "endYear": 2010,
+      "userId": "wqBlhsxgk8w",
+      "vacancyId": "1",
+      "status": "Pending",
+      "id": "EOMsdFhTnWM"
     }
   ],
   "cv": [
@@ -212,11 +210,7 @@
       "address": "Cəfər Xəndan 174A",
       "education": "Baki dovlet universiteti",
       "description": "",
-      "languages": [
-        "Russian",
-        "English",
-        "Azerbaijan"
-      ],
+      "languages": ["Russian", "English", "Azerbaijan"],
       "userId": "4HqmkrS0hMo",
       "id": "jSROHuWUICM"
     },
@@ -228,30 +222,26 @@
       "address": "Cəfər Xəndan 174A",
       "education": "Baki dovlet universiteti",
       "description": "asrhgasrhfg",
-      "languages": [
-        "Russian",
-        "English",
-        "Azerbaijan"
-      ],
+      "languages": ["Russian", "English", "Azerbaijan"],
       "userId": "VySxcOurzXY",
       "vacancyId": "1",
       "id": "uOk3v58Wefc"
     },
     {
-      "name": "Zakir",
-      "surname": "Abilov",
+      "name": "Şəfaqət",
+      "surname": "Məmmədova",
       "phone": "0554383377",
       "email": "zakirabilov023@gmail.com",
-      "address": "Cəfər Xəndan 174A",
+      "address": "İzlivnoy 1",
       "education": "Baki dovlet universiteti",
-      "description": "WWWWWWWWWWWW",
-      "languages": [
-        "Russian",
-        "English"
-      ],
-      "userId": "VySxcOurzXY",
+      "description": "asdgasdhgasdhg",
+      "languages": ["Russian", "English", "Azerbaijan"],
+      "startYear": 2006,
+      "endYear": 2010,
+      "userId": "wqBlhsxgk8w",
       "vacancyId": "1",
-      "id": "rMr5GiqMQt4"
+      "status": "Pending",
+      "id": "yTaGGA_WaOE"
     }
   ],
   "favorite": [],

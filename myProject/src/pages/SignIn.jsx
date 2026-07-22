@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import "../styles/Auth.css";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  Box,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  Alert,
+} from "@mui/material";
 import { useContextFunc } from "../context/JobContext";
-import { searchUsers } from "../api/api";
+import PasswordField from "../components/PasswordField";
 
 export default function SignIn() {
   const { users, login } = useContextFunc();
-  const [isTrue, setIsTrue] = useState(false);
-
+  const [loginFailed, setLoginFailed] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -19,71 +25,86 @@ export default function SignIn() {
   } = useForm();
 
   const onSubmit = (data) => {
-    const findWorker = users.find(
+    const foundUser = users.find(
       (item) => item.email === data.email && item.password === data.password,
     );
 
-    if (!findWorker) {
-      setIsTrue(true);
+    if (!foundUser) {
+      setLoginFailed(true);
       return;
-    } else {
-      setIsTrue(false);
     }
-    
-    login(findWorker);
 
+    setLoginFailed(false);
+    login(foundUser);
     reset();
     navigate("/");
   };
 
   return (
-    <section className="container">
-      <div className="caseAuth">
-        <h1>Sign In</h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="form-authen">
-          <div className="authen-inputs">
-            <input
-              name="username"
-              placeholder="Enter email"
-              {...register("email", {
-                required: "Please, enter your email",
-                minLength: {
-                  value: 2,
-                  message: "Please, enter minimum 2 charakter",
-                },
-                pattern: {
-                  value: /^[a-zA-Z0-9._%+-]+@(gmail\.com|mail\.ru)$/,
-                  message: "Plase, set @gmail or @mail.ru ",
-                },
-              })}
-            />
-            {errors.email && <p className="error">{errors.email.message}</p>}
+    <Box sx={{ maxWidth: 420, mx: "auto", px: { xs: 2, sm: 3 }, py: 8 }}>
+      <Typography
+        variant="h5"
+        fontWeight={800}
+        sx={{ mb: 3, textAlign: "center" }}
+      >
+        Sign In
+      </Typography>
 
-            <input
-              name="password"
-              placeholder="Enter password"
-              {...register("password", {
-                required: "Please, enter your password",
-                minLength: {
-                  value: 8,
-                  message: "Please, enter minimum 8 charakter",
-                },
-                maxLength: {
-                  value: 20,
-                  message: "Please, enter maximum 20 charakter",
-                },
-              })}
-            />
-            {errors.password && (
-              <p className="error">{errors.password.message}</p>
-            )}
-          </div>
-          {isTrue && <p className="error"> Wrong Email or Password</p>}
-          <div className="authBtn-case">
-            <button type="submit">Sign In</button>
-          </div>
-        </form>
-      </div>
-    </section>
+      <Paper
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{
+          p: { xs: 2.5, sm: 4 },
+          display: "flex",
+          flexDirection: "column",
+          gap: 2.5,
+        }}
+      >
+        <TextField
+          label="Email"
+          type="email"
+          fullWidth
+          error={!!errors.email}
+          helperText={errors.email?.message}
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /^\S+@\S+\.\S+$/,
+              message: "Invalid email format",
+            },
+          })}
+        />
+
+        <PasswordField
+          label="Password"
+          error={!!errors.password}
+          helperText={errors.password?.message}
+          {...register("password", { required: "Password is required" })}
+        />
+
+        {loginFailed && <Alert severity="error">Wrong email or password</Alert>}
+
+        <Button
+          type="submit"
+          variant="contained"
+          size="large"
+          sx={{ height: 48, mt: 1 }}
+        >
+          Sign In
+        </Button>
+
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          textAlign="center"
+          mt={1}
+        >
+          Don't have an account?{" "}
+          <Box component={Link} to="/signup" sx={{ color: "primary.main" }}>
+            Sign up
+          </Box>
+        </Typography>
+      </Paper>
+    </Box>
   );
 }
