@@ -58,14 +58,11 @@ export const deleteUserInServer = async (id) => {
   const response = await jobTrack.delete(`/users/${id}`);
   return response.data;
 };
-//AAAA
 
 export const addCvToServer = async (data) => {
   const response = await jobTrack.post(`/cv/`, data);
   return response.data;
 };
-
-//Vacancies
 
 export const addVacanciesToServer = async (data) => {
   const response = await jobTrack.post(`/vacancies`, data);
@@ -77,7 +74,10 @@ export const searchVacancy = async () => {
   return response.data;
 };
 
-//Notification
+export const changeAccountDetail = async (id, data) => {
+  const response = await jobTrack.patch(`/users/${id}`,data);
+  return response.data;
+};
 
 export const changeNotificationStatus = async (id, status) => {
   const response = await jobTrack.patch(`/notifications/${id}`, {

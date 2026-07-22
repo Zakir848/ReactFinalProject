@@ -15,6 +15,7 @@ import {
   getAllNotification,
   AddNotificationToServer,
   changeNotificationStatus,
+  changeAccountDetail,
 } from "../api/api";
 
 const JobContextCreate = createContext();
@@ -121,6 +122,30 @@ export default function JobContext({ children }) {
     }
   };
 
+  const changeAccountDetailFromStatus = async (data) => {
+    if (!currentUser) return;
+
+    try {
+      const isEmployer = currentUser?.role === "Employer";
+      const payload = isEmployer
+        ? {
+            companyName: data.companyName,
+            email: data.email,
+            phone: data.phone,
+          }
+        : { name: data.name, email: data.email, phone: data.phone };
+
+      const updatedUser = await changeAccountDetail(currentUser.id, payload);
+
+      setCurrentUser(updatedUser);
+      setUsers((prev) =>
+        prev.map((user) => (user.id === updatedUser.id ? updatedUser : user)),
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const sendNotification = async (data) => {
     try {
       await AddNotificationToServer(data);
@@ -211,6 +236,7 @@ export default function JobContext({ children }) {
         addCv,
         deleteUser,
         changePassword,
+        changeAccountDetailFromStatus,
         login,
         logOut,
         changeNotificationFromStatus,

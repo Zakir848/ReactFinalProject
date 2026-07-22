@@ -14,6 +14,7 @@ import {
   IconButton,
   Paper,
   Backdrop,
+  CircularProgress,
 } from "@mui/material";
 
 import { useForm } from "react-hook-form";
@@ -51,11 +52,21 @@ export default function UserAllDetail() {
     setIsTurnOff,
     changePassword,
     deleteUser,
+    changeAccountDetailFromStatus,
+    logOut,
+    setLoading,
   } = useContextFunc();
 
-  const { logOut } = useContextFunc();
   const [alertDelete, setAlertDelete] = useState(false);
+  const [loadingProgress, setLoadingProgress] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
   const navigate = useNavigate();
+
+  const buttonSx = {
+    ...(success && {
+      bgcolor: "success",
+    }),
+  };
 
   useEffect(() => {
     {
@@ -85,7 +96,21 @@ export default function UserAllDetail() {
   }
 
   const role = currentUser.role === "Worker";
-  const saveForm = () => {};
+
+  const saveForm = async (data) => {
+    if (!data || !currentUser) return;
+
+    try {
+      setLoadingProgress(true);
+      setSuccess(false);
+      await changeAccountDetailFromStatus(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingProgress(false);
+      setSuccess(true);
+    }
+  };
 
   const handleChangePassword = async (data) => {
     if (!data || !currentUser) return;
@@ -119,96 +144,133 @@ export default function UserAllDetail() {
         <Typography variant="h5" fontWeight={800} sx={{ mb: "14px" }}>
           Setting
         </Typography>
-
-        <SectionCard title="Profile" description="Change account details here">
-          <Stack
-            component="form"
-            onSubmit={profileForm.handleSubmit(saveForm)}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-            }}
+        <Paper component="form" onSubmit={profileForm.handleSubmit(saveForm)}>
+          <SectionCard
+            title="Profile"
+            description="Change account details here"
           >
-            {role ? (
-              <>
-                <TextField
-                  label="Ad"
-                  defaultValue={currentUser?.name}
-                  fullWidth
-                  error={!!profileForm.formState.errors?.name}
-                  helperText={profileForm.formState.errors?.name?.message}
-                  size="small"
-                  {...profileForm.register("name", {
-                    required: "Name is required",
-                    minLength: {
-                      value: 3,
-                      message: "Minimum 3 characters",
-                    },
-                  })}
-                />
-              </>
-            ) : (
-              <>
-                <TextField
-                  label="Company Name"
-                  defaultValue={currentUser?.companyName}
-                  fullWidth
-                  error={!!profileForm.formState.errors?.companyName}
-                  helperText={
-                    profileForm.formState.errors?.companyName?.message
-                  }
-                  size="small"
-                  {...profileForm.register("companyName", {
-                    required: "Company name is required",
-                    minLength: {
-                      value: 2,
-                      message: "Minimum 2 characters",
-                    },
-                  })}
-                />
-              </>
-            )}
-
-            <TextField
-              label="Email"
-              defaultValue={currentUser?.email || ""}
-              fullWidth
-              size="small"
-              type="email"
-              {...profileForm.register("email", {
-                required: "Please, enter your email",
-                minLength: {
-                  value: 2,
-                  message: "Please, enter minimum 2 charakter",
-                },
-                pattern: {
-                  value: /^[a-zA-Z0-9._%+-]+@(gmail\.com|mail\.ru)$/,
-                  message: "Plase, set @gmail or @mail.ru ",
-                },
-              })}
-            />
-            <TextField
-              label="Telefon"
-              type="number"
+            <Stack
               sx={{
-                "& input[type=number]::-webkit-inner-spin-button": {
-                  WebkitAppearance: "none",
-                  margin: 0,
-                },
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
               }}
-              defaultValue={currentUser?.phone || ""}
-              fullWidth
-              size="small"
-            />
+            >
+              {role ? (
+                <>
+                  <TextField
+                    label="Ad"
+                    defaultValue={currentUser?.name}
+                    fullWidth
+                    error={!!profileForm.formState.errors?.name}
+                    helperText={profileForm.formState.errors?.name?.message}
+                    size="small"
+                    {...profileForm.register("name", {
+                      required: "Name is required",
+                      minLength: {
+                        value: 3,
+                        message: "Minimum 3 characters",
+                      },
+                    })}
+                  />
+                </>
+              ) : (
+                <>
+                  <TextField
+                    label="Company Name"
+                    defaultValue={currentUser?.companyName}
+                    fullWidth
+                    error={!!profileForm.formState.errors?.companyName}
+                    helperText={
+                      profileForm.formState.errors?.companyName?.message
+                    }
+                    size="small"
+                    {...profileForm.register("companyName", {
+                      required: "Company name is required",
+                      minLength: {
+                        value: 2,
+                        message: "Minimum 2 characters",
+                      },
+                    })}
+                  />
+                </>
+              )}
 
-            <Box>
-              <Button variant="contained" type="submit">
-                Save
-              </Button>
-            </Box>
-          </Stack>
-        </SectionCard>
+              <TextField
+                label="Email"
+                defaultValue={currentUser?.email || ""}
+                fullWidth
+                size="small"
+                type="email"
+                error={!!profileForm.formState.errors?.email}
+                helperText={profileForm.formState.errors?.email?.message}
+                {...profileForm.register("email", {
+                  required: "Please, enter your email",
+                  minLength: {
+                    value: 2,
+                    message: "Please, enter minimum 2 charakter",
+                  },
+                  pattern: {
+                    value: /^[a-zA-Z0-9._%+-]+@(gmail\.com|mail\.ru)$/,
+                    message: "Plase, set @gmail or @mail.ru ",
+                  },
+                })}
+              />
+
+              <TextField
+                label="Telefon"
+                type="number"
+                sx={{
+                  "& input[type=number]::-webkit-inner-spin-button": {
+                    WebkitAppearance: "none",
+                    margin: 0,
+                  },
+                }}
+                defaultValue={currentUser?.phone || ""}
+                fullWidth
+                size="small"
+                error={!!profileForm.formState.errors?.phone}
+                helperText={profileForm.formState.errors?.phone?.message}
+                {...profileForm.register("phone", {
+                  required: "Please, enter your phone",
+                  minLength: {
+                    value: 7,
+                    message: "Please, enter minimum 7 digits",
+                  },
+                  pattern: {
+                    value: /^[0-9]+$/,
+                    message: "Phone number must contain only digits",
+                  },
+                })}
+              />
+
+              <Box sx={{ m: 1, position: "relative", width: "64px" }}>
+                <Button
+                  variant="contained"
+                  sx={buttonSx}
+                  disabled={loadingProgress}
+                  type="submit"
+                >
+                  Save
+                </Button>
+                {loadingProgress && (
+                  <CircularProgress
+                    aria-label="Loading…"
+                    size={24}
+                    sx={{
+                      color: "success",
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: "-12px",
+                      marginLeft: "-12px",
+                    }}
+                  />
+                )}
+              </Box>
+            </Stack>
+          </SectionCard>
+        </Paper>
 
         <SectionCard title="Notifications">
           <FormControlLabel
