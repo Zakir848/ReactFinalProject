@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const jobTrack = axios.create({
-  baseURL: "http://192.168.31.183:3000",
+  baseURL: "http://localhost:3000",
 });
 
 //users
