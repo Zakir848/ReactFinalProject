@@ -2,10 +2,10 @@
   "users": [
     {
       "id": "3",
-      "name": "Sebine",
+      "name": "Aynur",
       "surname": "Memmedova",
-      "username": "sabina001",
-      "password": "sabine123",
+      "username": "Aynur001",
+      "password": "Aynur123@",
       "email": "sabina@gmail.com",
       "age": "18",
       "gender": "Female",
@@ -183,22 +183,6 @@
       "userId": "wqBlhsxgk8w",
       "vacancyId": "1",
       "id": "sdtTWERGvSDtg"
-    },
-    {
-      "name": "Şəfaqət",
-      "surname": "Məmmədova",
-      "phone": "0554383377",
-      "email": "zakirabilov023@gmail.com",
-      "address": "İzlivnoy 1",
-      "education": "Baki dovlet universiteti",
-      "description": "asdgasdhgasdhg",
-      "languages": ["Russian", "English", "Azerbaijan"],
-      "startYear": 2006,
-      "endYear": 2010,
-      "userId": "wqBlhsxgk8w",
-      "vacancyId": "1",
-      "status": "Pending",
-      "id": "EOMsdFhTnWM"
     }
   ],
   "cv": [
@@ -226,22 +210,6 @@
       "userId": "VySxcOurzXY",
       "vacancyId": "1",
       "id": "uOk3v58Wefc"
-    },
-    {
-      "name": "Şəfaqət",
-      "surname": "Məmmədova",
-      "phone": "0554383377",
-      "email": "zakirabilov023@gmail.com",
-      "address": "İzlivnoy 1",
-      "education": "Baki dovlet universiteti",
-      "description": "asdgasdhgasdhg",
-      "languages": ["Russian", "English", "Azerbaijan"],
-      "startYear": 2006,
-      "endYear": 2010,
-      "userId": "wqBlhsxgk8w",
-      "vacancyId": "1",
-      "status": "Pending",
-      "id": "yTaGGA_WaOE"
     }
   ],
   "favorite": [],
